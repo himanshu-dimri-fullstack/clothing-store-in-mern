@@ -5,9 +5,9 @@ const NavbarTop = () => {
     return (
         <div className="container mx-auto pt-3 px-3">
             <div className="flex h-10 lg:h-12 justify-between items-center gap-3">
-                <div>
+                <Link to="/">
                     <img src="/assets/logo.png" className="h-10 w-25 object-contain" />
-                </div>
+                </Link>
                 <div className="hidden lg:block">
                     <input placeholder="Search" className="p-2 w-100 xl:w-200 outline-none border border-[#53c9d7] rounded-xl text-sm text-black font-semibold
                      focus:outline-none" />

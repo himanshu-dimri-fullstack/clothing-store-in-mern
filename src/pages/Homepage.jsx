@@ -1,83 +1,33 @@
+import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard"
+import { useEffect, useState } from "react";
+import { getProducts } from "../api/api.js"
 
 
 const Homepage = () => {
-    const menProducts = [
-        {
-            id: 1,
-            title: "Duke Urban Boys Hoodie",
-            price: "1200",
-            src: "/assets/duke-urban-boys-hoodie.webp"
-        },
-        {
-            id: 2,
-            title: "Men Dark Demin Blue Jean",
-            price: "1200",
-            src: "/assets/men-dark-demin-blue-jeans.avif"
-        },
-        {
-            id: 3,
-            title: "Men Dark Black T-shirt",
-            price: "1200",
-            src: "/assets/t-shirt.jpg"
-        },
-        {
-            id: 4,
-            title: "Generic Stand Collar Winter Jacket",
-            price: "1200",
-            src: "/assets/generic-stand-collar-winter-jacket.avif"
-        },
-        {
-            id: 5,
-            title: "Duke Urban Boys Hoodie",
-            price: "1200",
-            src: "/assets/duke-urban-boys-hoodie.webp"
-        },
-        {
-            id: 6,
-            title: "Duke Urban Boys Hoodie",
-            price: "1200",
-            src: "/assets/duke-urban-boys-hoodie.webp"
+    const [loading, setLoading] = useState(true);
+    const [womenProducts, setWomenProducts] = useState([]);
+    const [menProducts, setMenProducts] = useState([]);
+
+    useEffect(() => {
+
+        const fetchProducts = async () => {
+            const menSlug = "men";
+            const womenSlug = "women";
+            const [fetchMenProducts, fetchWomenProducts] = await Promise.all(
+                [
+                    getProducts({ "slug": menSlug }),
+                    getProducts({ "slug": womenSlug })
+                ]
+            );
+            setMenProducts(fetchMenProducts);
+            setWomenProducts(fetchWomenProducts);
+            setLoading(false);
         }
-    ];
-    const womenProducts = [
-        {
-            id: 1,
-            title: "Pejock Women Short Sleeves",
-            price: "1200",
-            src: "/assets/pejock-women-short-sleeves.jpg"
-        },
-        {
-            id: 2,
-            title: "Women Slim Fit Mini Dress",
-            price: "1200",
-            src: "/assets/women-slim-fit-mini-dress.webp"
-        },
-        {
-            id: 3,
-            title: "Women Red Solid Top",
-            price: "1200",
-            src: "/assets/women-red-solid-top.avif"
-        },
-        {
-            id: 4,
-            title: "Funky Monkey Hoodie Women",
-            price: "1200",
-            src: "/assets/funky-monkey-hoodie-women.webp"
-        },
-        {
-            id: 5,
-            title: "Blue Dark Women Jean",
-            price: "1200",
-            src: "/assets/jean-blue-dark-women.png"
-        },
-        {
-            id: 6,
-            title: "Women Red Solid Top",
-            price: "1200",
-            src: "/assets/women-red-solid-top.avif"
-        },
-    ];
+        fetchProducts();
+    }, [])
+
+
     return (
         <div className="container mx-auto px-3 mt-3">
 
@@ -94,37 +44,71 @@ const Homepage = () => {
                 </div>
             </div>
 
-            <div className="mt-4 md:mt-6">
-                <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mb-4 md:mb-6">Suggested for Women</h2>
-                <div className="grid grid-cols-12">
-                    {
-                        womenProducts.map((product) => {
-                            return (
-                                <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
-                                    <ProductCard product={product} />
-                                </div>
-                            )
-                        })
-                    }
+            {
+                loading &&
 
+
+                <div className="flex justify-center items-center h-screen">
+                    <div className="w-12 h-12 border-4 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
                 </div>
-            </div>
 
-            <div className="mt-4 md:mt-6">
-                <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mb-4 md:mb-6">Suggested for Men</h2>
-                <div className="grid grid-cols-12">
-                    {
-                        menProducts.map((product) => {
-                            return (
-                                <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
-                                    <ProductCard product={product} />
-                                </div>
-                            )
-                        })
-                    }
+            }
 
+            {
+                womenProducts.length > 0 &&
+
+                <div className="mt-4 md:mt-6">
+                    <div className="flex justify-between">
+                        <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mb-4 md:mb-6">Suggested for Women</h2>
+                        <div className="text-md text-[rgb(0,57,99)] font-semibold">
+                            <Link to="/products/women">Explore All</Link>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-12">
+                        {
+                            womenProducts.map((product) => {
+                                return (
+                                    <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                        <ProductCard product={product} />
+                                    </div>
+                                )
+                            })
+                        }
+
+                    </div>
                 </div>
-            </div>
+
+            }
+
+
+
+            {
+
+                menProducts.length > 0 &&
+                <div className="mt-4 md:mt-6">
+                    <div className="flex justify-between">
+                        <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mb-4 md:mb-6">Suggested for Men</h2>
+                        <div className="text-md text-[rgb(0,57,99)] font-semibold">
+                            <Link to="/products/men">Explore All</Link>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-12">
+                        {
+                            menProducts.map((product) => {
+                                return (
+                                    <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                        <ProductCard product={product} />
+                                    </div>
+                                )
+                            })
+                        }
+
+                    </div>
+                </div>
+
+            }
+
+
 
         </div>
     )

@@ -1,0 +1,222 @@
+{
+    "categories": [
+        {
+            "id": "1",
+            "title": "Men",
+            "slug": "men"
+        },
+        {
+            "id": "2",
+            "title": "Women",
+            "slug": "women"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-1",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 2,
+            "title": "Men Dark Demin Blue Jean",
+            "slug": "men-dark-demin-blue-jean-2",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/men-dark-demin-blue-jeans.avif"
+        },
+        {
+            "id": 3,
+            "title": "Men Dark Black T-shirt",
+            "slug": "men-dark-black-t-shirt-3",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/t-shirt.jpg"
+        },
+        {
+            "id": 4,
+            "title": "Generic Stand Collar Winter Jacket",
+            "slug": "generic-stand-collar-winter-jacket-4",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/generic-stand-collar-winter-jacket.avif"
+        },
+        {
+            "id": 5,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-5",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 6,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-6",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 7,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-7",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 8,
+            "title": "Men Dark Demin Blue Jean",
+            "slug": "men-dark-demin-blue-jean-8",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/men-dark-demin-blue-jeans.avif"
+        },
+        {
+            "id": 9,
+            "title": "Men Dark Black T-shirt",
+            "slug": "men-dark-black-t-shirt-9",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/t-shirt.jpg"
+        },
+        {
+            "id": 10,
+            "title": "Generic Stand Collar Winter Jacket",
+            "slug": "generic-stand-collar-winter-jacket-10",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/generic-stand-collar-winter-jacket.avif"
+        },
+        {
+            "id": 11,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-11",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 12,
+            "title": "Duke Urban Boys Hoodie",
+            "slug": "duke-urban-boys-hoodie-12",
+            "catSlug": "men",
+            "price": 1200,
+            "src": "/assets/duke-urban-boys-hoodie.webp"
+        },
+        {
+            "id": 13,
+            "title": "Pejock Women Short Sleeves",
+            "slug": "pejock-women-short-sleeves-13",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/pejock-women-short-sleeves.jpg"
+        },
+        {
+            "id": 14,
+            "title": "Women Slim Fit Mini Dress",
+            "slug": "women-slim-fit-mini-dress-14",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-slim-fit-mini-dress.webp"
+        },
+        {
+            "id": 15,
+            "title": "Women Red Solid Top",
+            "slug": "women-red-solid-top-15",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-red-solid-top.avif"
+        },
+        {
+            "id": 16,
+            "title": "Funky Monkey Hoodie Women",
+            "slug": "funky-monkey-hoodie-women-16",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/funky-monkey-hoodie-women.webp"
+        },
+        {
+            "id": 17,
+            "title": "Blue Dark Women Jean",
+            "slug": "blue-dark-women-jean-17",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/jean-blue-dark-women.png"
+        },
+        {
+            "id": 18,
+            "title": "Women Red Solid Top",
+            "slug": "women-red-solid-top-18",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-red-solid-top.avif"
+        },
+        {
+            "id": 19,
+            "title": "Pejock Women Short Sleeves",
+            "slug": "pejock-women-short-sleeves-19",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/pejock-women-short-sleeves.jpg"
+        },
+        {
+            "id": 20,
+            "title": "Women Slim Fit Mini Dress",
+            "slug": "women-slim-fit-mini-dress-20",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-slim-fit-mini-dress.webp"
+        },
+        {
+            "id": 21,
+            "title": "Women Red Solid Top",
+            "slug": "women-red-solid-top-21",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-red-solid-top.avif"
+        },
+        {
+            "id": 22,
+            "title": "Funky Monkey Hoodie Women",
+            "slug": "funky-monkey-hoodie-women-22",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/funky-monkey-hoodie-women.webp"
+        },
+        {
+            "id": 23,
+            "title": "Blue Dark Women Jean",
+            "slug": "blue-dark-women-jean-23",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/jean-blue-dark-women.png"
+        },
+        {
+            "id": 24,
+            "title": "Women Red Solid Top",
+            "slug": "women-red-solid-top-24",
+            "catSlug": "women",
+            "price": 1200,
+            "src": "/assets/women-red-solid-top.avif"
+        }
+    ],
+    "users": [
+        {
+            "id": "05ed",
+            "name": "Himanshu Dimri",
+            "email": "himanshudimrifullstack@gmail.com",
+            "password": "123456"
+        },
+        {
+            "id": "a022",
+            "name": "Happy",
+            "email": "happy@gmail.com",
+            "password": "123456"
+        }
+    ]
+}
