@@ -89,7 +89,7 @@ const Homepage = () => {
                     <div className="">
                         <h1 className="text-xl lg:text-4xl text-black font-bold mb-3 lg:mb-6">Deals you can't ignore</h1>
                         <button className="text-md lg:text-lg text-white bg-[#003963] border border-[#003963]
-                        rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black">Shop Now</button>
+                        rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-transparent hover:text-black">Shop Now</button>
                     </div>
                 </div>
             </div>
