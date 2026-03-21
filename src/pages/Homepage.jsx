@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard"
 import { useEffect, useState } from "react";
-import { getProducts } from "../api/api.js"
+import { getProducts, getSubCategories } from "../api/api.js"
+import SubCategoryCard from "../components/SubCategoryCard.jsx";
 
 
 const Homepage = () => {
     const [loading, setLoading] = useState(true);
+    const [menSubCategories, setMenSubCategories] = useState([]);
+    const [womenSubCategories, setWomenSubCategories] = useState([]);
     const [womenProducts, setWomenProducts] = useState([]);
     const [menProducts, setMenProducts] = useState([]);
 
@@ -14,12 +17,16 @@ const Homepage = () => {
         const fetchProducts = async () => {
             const menSlug = "men";
             const womenSlug = "women";
-            const [fetchMenProducts, fetchWomenProducts] = await Promise.all(
+            const [fetchMenSubCat, fetchWomenSubCat, fetchMenProducts, fetchWomenProducts] = await Promise.all(
                 [
+                    getSubCategories({ "slug": menSlug }),
+                    getSubCategories({ "slug": womenSlug }),
                     getProducts({ "slug": menSlug }),
                     getProducts({ "slug": womenSlug })
                 ]
             );
+            setMenSubCategories(fetchMenSubCat);
+            setWomenSubCategories(fetchWomenSubCat);
             setMenProducts(fetchMenProducts);
             setWomenProducts(fetchWomenProducts);
             setLoading(false);
@@ -55,6 +62,44 @@ const Homepage = () => {
             }
 
             {
+                womenSubCategories.length > 0 &&
+
+                <div className="mt-4 md:mt-6">
+                    <div className="grid grid-cols-12">
+                        {
+                            womenSubCategories.slice(0, 6).map((item) => {
+                                return (
+                                    <Link to="/" key={item.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                        <SubCategoryCard item={item} />
+                                    </Link>
+                                )
+                            })
+                        }
+
+                    </div>
+                </div>
+            }
+
+            {
+                menSubCategories.length > 0 &&
+
+                <div className="mt-4 md:mt-6">
+                    <div className="grid grid-cols-12">
+                        {
+                            menSubCategories.slice(0, 6).map((item) => {
+                                return (
+                                    <Link to="/" key={item.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                        <SubCategoryCard item={item} />
+                                    </Link>
+                                )
+                            })
+                        }
+
+                    </div>
+                </div>
+            }
+
+            {
                 womenProducts.length > 0 &&
 
                 <div className="mt-4 md:mt-6">
@@ -66,7 +111,7 @@ const Homepage = () => {
                     </div>
                     <div className="grid grid-cols-12">
                         {
-                            womenProducts.map((product) => {
+                            womenProducts.slice(0, 12).map((product) => {
                                 return (
                                     <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
@@ -77,13 +122,9 @@ const Homepage = () => {
 
                     </div>
                 </div>
-
             }
 
-
-
             {
-
                 menProducts.length > 0 &&
                 <div className="mt-4 md:mt-6">
                     <div className="flex justify-between">
@@ -94,7 +135,7 @@ const Homepage = () => {
                     </div>
                     <div className="grid grid-cols-12">
                         {
-                            menProducts.map((product) => {
+                            menProducts.slice(0, 12).map((product) => {
                                 return (
                                     <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
@@ -105,7 +146,6 @@ const Homepage = () => {
 
                     </div>
                 </div>
-
             }
 
 
