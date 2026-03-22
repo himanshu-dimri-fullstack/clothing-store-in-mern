@@ -51,6 +51,8 @@ const Homepage = () => {
                 </div>
             </div>
 
+            <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mt-8 mb-6">What You’ll Find Here</h2>
+
             {
                 loading &&
 

@@ -10,17 +10,18 @@ export const getCategory = async ({ slug }) => {
     }
 }
 
-export const getProducts = async ({ slug }) => {
+export const getProducts = async ({ slug, page, limit }) => {
     try {
-        const res = await fetch(`http://localhost:3000/products?catSlug=${slug}`);
+        const res = await fetch(
+            `http://localhost:3000/products?catSlug=${slug}&_page=${page}&_per_page=${limit}`
+        );
         const data = await res.json();
-        console.log("data:", data)
         return data;
+
+    } catch (err) {
+        console.log("message:", err.message);
     }
-    catch (err) {
-        console.log("message:", err.message)
-    }
-}
+};
 
 export const getProduct = async ({ slug }) => {
     try {

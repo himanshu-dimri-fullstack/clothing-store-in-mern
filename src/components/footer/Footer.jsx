@@ -5,7 +5,7 @@ const Footer = () => {
         <>
             <div className="w-full  bg-[#024474] border-t border-[#ccc] mt-6">
                 <div className="container mx-auto py-10 px-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-white">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 text-white">
                         <div>
                             <h5 className="text-lg font-semibold mb-3">About</h5>
                             <div className="flex flex-col text-sm">
