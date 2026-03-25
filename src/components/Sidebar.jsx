@@ -1,5 +1,20 @@
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-const Sidebar = ({ categories, types, sizes, handleFilterChange, clearFilters, slug, filters, navigate }) => {
+const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategory }) => {
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const limit = parseInt(searchParams.get("_per_page")) || 8;
+
+    const handleCategory = (newSlug) => {
+        setSearchParams({
+            _page: 1,
+            _per_page: limit
+        });
+
+        navigate(`/products/${newSlug}`);
+    };
+
     return (
         <div>
             <div className="sticky top-5 border border-[#ccc] rounded-2xl p-4 shadow-sm space-y-6 bg-white">
@@ -12,7 +27,7 @@ const Sidebar = ({ categories, types, sizes, handleFilterChange, clearFilters, s
                                 <input
                                     type="checkbox"
                                     checked={slug === item.slug}
-                                    onChange={() => navigate(`/products/${item.slug}`)}
+                                    onChange={() => handleCategory(item.slug)}
                                 />
                                 {item.title}
                             </label>
@@ -23,48 +38,22 @@ const Sidebar = ({ categories, types, sizes, handleFilterChange, clearFilters, s
                 <div>
                     <h2 className="font-semibold text-lg mb-2">Product Type</h2>
                     {
-                        types.map(type => (
-                            <label key={type} className="flex gap-2">
+                        subCategories.map(subcategory => (
+                            <label key={subcategory.id} className="flex gap-2">
                                 <input
                                     type="checkbox"
-                                    checked={filters.type === type}
-                                    onChange={() => handleFilterChange("type", type)}
+                                    checked={subCatSlug === subcategory.slug}
+                                    onChange={() => handleSubCategory(subcategory.slug)}
                                 />
-                                {type}
+                                {subcategory.title}
                             </label>
                         ))
                     }
                 </div>
 
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">Size</h2>
-                    <div className="flex flex-wrap gap-2">
-                        {
-                            sizes.map(size => (
-                                <button
-                                    key={size}
-                                    onClick={() => handleFilterChange("size", size)}
-                                    className={`border px-3 py-1 rounded-lg
-                                            ${filters.size === size ? "bg-black text-white" : ""}`}
-                                >
-                                    {size}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
-
-                <button
-                    onClick={clearFilters}
-                    className="w-full border py-2 rounded-lg hover:bg-black hover:text-white"
-                >
-                    Clear Filters
-                </button>
-
             </div>
-
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

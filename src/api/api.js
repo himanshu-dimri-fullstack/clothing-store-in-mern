@@ -10,12 +10,18 @@ export const getCategory = async ({ slug }) => {
     }
 }
 
-export const getProducts = async ({ slug, page, limit }) => {
+export const getProducts = async ({ slug, subCatSlug, page, limit }) => {
     try {
-        const res = await fetch(
-            `http://localhost:3000/products?catSlug=${slug}&_page=${page}&_per_page=${limit}`
-        );
+
+        let url = `http://localhost:3000/products?catSlug=${slug}&_page=${page}&_per_page=${limit}`;
+
+        if (subCatSlug) {
+            url += `&subCatSlug=${subCatSlug}`;
+        }
+
+        const res = await fetch(url);
         const data = await res.json();
+
         return data;
 
     } catch (err) {

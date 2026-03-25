@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { getProducts, getCategory, getCategories } from "../api/api.js";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { getProducts, getCategory, getCategories, getSubCategories } from "../api/api.js";
 import { SlidersHorizontal, X } from "lucide-react";
 import Pagination from "react-responsive-pagination";
 import 'react-responsive-pagination/themes/classic-light-dark.css';
@@ -10,85 +10,70 @@ import SidebarMobile from "../components/SidebarMobile.jsx";
 
 const ProductsPage = () => {
     const { slug } = useParams();
-    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
-    const [allProducts, setAllProducts] = useState([]);
     const [category, setCategory] = useState("");
     const [categories, setCategories] = useState([]);
-    const [page, setPage] = useState(1);
+    const [subCategories, setSubCategories] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const [filters, setFilters] = useState({
-        type: "",
-        size: "",
-    });
-
-    const [types, setTypes] = useState([]);
-    const [sizes, setSizes] = useState([]);
-
-    const handleFilterChange = (type, value) => {
-        setFilters((prev) => ({
-            ...prev,
-            [type]: prev[type] === value ? "" : value
-        }));
-    };
+    const page = parseInt(searchParams.get("_page")) || 1;
+    const limit = parseInt(searchParams.get("_per_page")) || 8;
+    const subCatSlug = searchParams.get("type") || "";
 
     useEffect(() => {
         const fetchData = async () => {
-            const [categoryData, productsData, categoriesData] = await Promise.all([
+            setLoading(true);
+
+            const [categoryData, productsData, categoriesData, subCategoriesData] = await Promise.all([
                 getCategory({ slug }),
-                getProducts({ slug, page, limit: 8 }),
-                getCategories()
+                getProducts({ slug, subCatSlug, page, limit }),
+                getCategories(),
+                getSubCategories({ slug })
             ]);
+
             setCategories(categoriesData);
+            setSubCategories(subCategoriesData);
             setCategory(categoryData[0]?.title);
-            setAllProducts(productsData.data);
+
             setProducts(productsData.data);
             setTotalPages(productsData.pages);
+
             setLoading(false);
             window.scrollTo(0, 0);
         };
 
         fetchData();
-    }, [slug, page]);
+    }, [slug, page, subCatSlug]);
 
-    useEffect(() => {
-        setPage(1);
-    }, [slug]);
+    const handlePageChange = (newPage) => {
+        const params = {
+            _page: newPage,
+            _per_page: limit
+        };
 
-    useEffect(() => {
-        if (allProducts.length === 0) return;
-
-        const uniqueTypes = [...new Set(allProducts.map(p => p.subCatSlug))];
-        const uniqueSizes = [...new Set(allProducts.flatMap(p => p.sizes))];
-
-        setTypes(uniqueTypes);
-        setSizes(uniqueSizes);
-    }, [allProducts]);
-
-    useEffect(() => {
-        let filtered = [...allProducts];
-
-        if (filters.type) {
-            filtered = filtered.filter(p => p.subCatSlug === filters.type);
+        if (subCatSlug) {
+            params.type = subCatSlug;
         }
 
-        if (filters.size) {
-            filtered = filtered.filter(p => p.sizes.includes(filters.size));
+        setSearchParams(params);
+    };
+
+    const handleSubCategory = (subSlug) => {
+        const params = {
+            _page: 1,
+            _per_page: limit
+        };
+
+        if (subSlug !== subCatSlug) {
+            params.type = subSlug;
         }
 
-        setProducts(filtered);
-    }, [filters, allProducts]);
-
-    const clearFilters = () => {
-        setFilters({
-            type: "",
-            size: "",
-        });
+        setSearchParams(params);
     };
 
     if (loading) {
@@ -108,35 +93,46 @@ const ProductsPage = () => {
                 <span>{category}</span>
             </div>
 
-            <SidebarMobile categories={categories} types={types} sizes={sizes} slug={slug}
-                handleFilterChange={handleFilterChange} clearFilters={clearFilters}
-                filters={filters} navigate={navigate} sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen} SlidersHorizontal={SlidersHorizontal} X={X} />
+            <SidebarMobile
+                categories={categories}
+                subCategories={subCategories}
+                slug={slug}
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                SlidersHorizontal={SlidersHorizontal}
+                X={X}
+                subCatSlug={subCatSlug}
+                handleSubCategory={handleSubCategory}
+            />
 
             <div className="grid grid-cols-12 gap-4">
 
                 <div className="hidden lg:block lg:col-span-3">
-                    <Sidebar categories={categories} types={types} sizes={sizes} slug={slug}
-                        handleFilterChange={handleFilterChange} clearFilters={clearFilters}
-                        filters={filters} navigate={navigate} />
+                    <Sidebar
+                        categories={categories}
+                        subCategories={subCategories}
+                        slug={slug}
+                        subCatSlug={subCatSlug}
+                        handleSubCategory={handleSubCategory}
+                    />
                 </div>
 
                 <div className="col-span-12 lg:col-span-9">
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {
-                            products.map(product => (
-                                <ProductCard key={product.id} product={product} />
-                            ))
-                        }
+                        {products.map(product => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
                     </div>
+
                     <div className="mt-6 flex justify-center">
                         <Pagination
                             current={page}
                             total={totalPages}
-                            onPageChange={setPage}
+                            onPageChange={handlePageChange}
                         />
                     </div>
+
                 </div>
 
             </div>
