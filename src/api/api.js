@@ -1,6 +1,6 @@
 export const getCategory = async ({ slug }) => {
     try {
-        const res = await fetch(`http://localhost:3000/categories?slug=${slug}`);
+        const res = await fetch(`https://clothing-store-server-gvh4.onrender.com/categories?slug=${slug}`);
         const data = await res.json();
         console.log("data:", data)
         return data;
@@ -13,7 +13,7 @@ export const getCategory = async ({ slug }) => {
 export const getProducts = async ({ slug, subCatSlug, page, limit }) => {
     try {
 
-        let url = `http://localhost:3000/products?catSlug=${slug}&_page=${page}&_per_page=${limit}`;
+        let url = `https://clothing-store-server-gvh4.onrender.com/products?catSlug=${slug}&_page=${page}&_per_page=${limit}`;
 
         if (subCatSlug) {
             url += `&subCatSlug=${subCatSlug}`;
@@ -31,7 +31,7 @@ export const getProducts = async ({ slug, subCatSlug, page, limit }) => {
 
 export const getProduct = async ({ slug }) => {
     try {
-        const res = await fetch(`http://localhost:3000/products?slug=${slug}`);
+        const res = await fetch(`https://clothing-store-server-gvh4.onrender.com/products?slug=${slug}`);
         const data = await res.json();
         console.log("data:", data)
         return data;
@@ -43,7 +43,7 @@ export const getProduct = async ({ slug }) => {
 
 export const getSubCategories = async ({ slug }) => {
     try {
-        const res = await fetch(`http://localhost:3000/subCategories?catSlug=${slug}`);
+        const res = await fetch(`https://clothing-store-server-gvh4.onrender.com/subCategories?catSlug=${slug}`);
         const data = await res.json();
         console.log("data:", data)
         return data;
@@ -55,7 +55,7 @@ export const getSubCategories = async ({ slug }) => {
 
 export const getCategories = async () => {
     try {
-        const res = await fetch("http://localhost:3000/categories");
+        const res = await fetch("https://clothing-store-server-gvh4.onrender.com/categories");
         const data = await res.json();
         console.log("data:", data)
         return data;
