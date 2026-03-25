@@ -15,6 +15,8 @@ const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategor
         navigate(`/products/${newSlug}`);
     };
 
+    const sizes = ["S", "M", "L"];
+
     return (
         <div>
             <div className="sticky top-5 border border-[#ccc] rounded-2xl p-4 shadow-sm space-y-6 bg-white">
@@ -51,6 +53,19 @@ const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategor
                     }
                 </div>
 
+                <div>
+                    <h2 className="font-semibold text-lg mb-2">Size</h2>
+                    <div className="flex gap-4">
+                        {sizes.map((s) => (
+                            <label key={s} className="flex gap-2">
+                                <input
+                                    type="checkbox"
+                                />
+                                {s}
+                            </label>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

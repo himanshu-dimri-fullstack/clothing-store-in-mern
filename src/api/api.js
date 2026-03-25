@@ -1,8 +1,9 @@
-export const getCategory = async ({ slug }) => {
+export const getCategory = async ({ catSlug }) => {
     try {
-        const res = await fetch(`https://clothing-store-server-gvh4.onrender.com/categories?slug=${slug}`);
+        console.log("categorySlug:", catSlug)
+        const res = await fetch(`https://clothing-store-server-gvh4.onrender.com/categories?slug=${catSlug}`);
         const data = await res.json();
-        console.log("data:", data)
+        console.log("category:", data)
         return data;
     }
     catch (err) {
@@ -57,7 +58,7 @@ export const getCategories = async () => {
     try {
         const res = await fetch("https://clothing-store-server-gvh4.onrender.com/categories");
         const data = await res.json();
-        console.log("data:", data)
+        console.log("category:", data)
         return data;
     }
     catch (err) {

@@ -1,28 +1,33 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom"
-import { getCategory, getProduct } from "../api/api.js"
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { getCategory, getProduct } from "../api/api.js";
 
 const ProductDetailPage = () => {
     const { catSlug, slug } = useParams();
-
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
     const [category, setCategory] = useState(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const [categoryData, productData] = await Promise.all(
-                [
+            try {
+                const [categoryData, productData] = await Promise.all([
                     getCategory({ catSlug }),
-                    getProduct({ slug })
-                ]
-            )
-            setCategory(categoryData[0].title)
-            setProduct(productData);
-            setLoading(false);
-        }
+                    getProduct({ slug }),
+                ]);
+                setCategory(categoryData[0]?.title || "Unknown Category");
+                console.log({ "productData": productData });
+                setProduct(productData[0]);
+
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchProduct();
-    }, [])
+    }, [catSlug, slug]);
 
     if (loading) {
         return (
@@ -32,11 +37,66 @@ const ProductDetailPage = () => {
         );
     }
 
+    if (!product) {
+        return (
+            <div className="flex justify-center items-center h-screen text-gray-500">
+                Product not found.
+            </div>
+        );
+    }
+
     return (
-        <div>
+        <div className="container mx-auto px-3 my-6">
 
+
+            <div className="text-sm text-[#003963] font-semibold mb-6">
+                <Link to="/">Home</Link>
+                <span className="px-1">/</span>
+                <Link to={`/products/${catSlug}`}>{category}</Link>
+                <span className="px-1">/</span>
+                <span>{product.title}</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div className="bg-gray-50 p-4 rounded-lg shadow col-span-1 flex justify-center items-center">
+                    <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        className="object-contain h-50 md:h-90"
+                    />
+                </div>
+
+                <div className="col-span-1 lg:col-span-2 flex flex-col gap-2 md:gap-4">
+
+                    <h1 className="text-lg md:text-3xl font-bold text-gray-800">
+                        {product.title}
+                    </h1>
+
+                    <p className="text-gray-700 leading-relaxed">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit aliquid asperiores minus odio dicta libero, quia veniam quas iusto illum ex autem optio rem nesciunt quis dolorum minima eaque corrupti.
+                    </p>
+
+                    <div className="flex items-center gap-2 md:gap-4 mt-2">
+                        <span className="text-lg md:text-3xl font-bold text-[#003963]">
+                            ₹{product.price}
+                        </span>
+                    </div>
+
+                    <div className="flex gap-4 mt-3 md:mt-6">
+                        <button className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
+                            Add to Cart
+                        </button>
+
+                        <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                            Buy Now
+                        </button>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default ProductDetailPage
+export default ProductDetailPage;

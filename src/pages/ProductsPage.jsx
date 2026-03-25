@@ -27,24 +27,35 @@ const ProductsPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
+            try {
+                setLoading(true);
 
-            const [categoryData, productsData, categoriesData, subCategoriesData] = await Promise.all([
-                getCategory({ slug }),
-                getProducts({ slug, subCatSlug, page, limit }),
-                getCategories(),
-                getSubCategories({ slug })
-            ]);
+                const [
+                    categoryData,
+                    productsData,
+                    categoriesData,
+                    subCategoriesData
+                ] = await Promise.all([
+                    getCategory({ slug }),
+                    getProducts({ slug, subCatSlug, page, limit }),
+                    getCategories(),
+                    getSubCategories({ slug })
+                ]);
 
-            setCategories(categoriesData);
-            setSubCategories(subCategoriesData);
-            setCategory(categoryData[0]?.title);
+                setCategories(categoriesData);
+                setSubCategories(subCategoriesData);
+                setCategory(categoryData[0]?.title);
 
-            setProducts(productsData.data);
-            setTotalPages(productsData.pages);
+                setProducts(productsData.data);
+                setTotalPages(productsData.pages);
 
-            setLoading(false);
-            window.scrollTo(0, 0);
+                window.scrollTo(0, 0);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchData();
@@ -121,9 +132,12 @@ const ProductsPage = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {products.map(product => (
-                            <ProductCard key={product.id} product={product} />
+                            <Link key={product.id} to={`/products/${slug}/${product.slug}`}>
+                                <ProductCard product={product} />
+                            </Link>
                         ))}
                     </div>
+
 
                     <div className="mt-6 flex justify-center">
                         <Pagination
