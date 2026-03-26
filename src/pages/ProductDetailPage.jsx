@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getCategory, getProduct } from "../api/api.js";
 import { CartContext } from "../context/CartContext.jsx";
 
 const ProductDetailPage = () => {
+    const navigate = useNavigate();
     const { catSlug, slug } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -99,7 +100,7 @@ const ProductDetailPage = () => {
 
                         {
                             isAdded ?
-                                <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                                <button onClick={() => navigate("/cart")} className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
                                     View Cart
                                 </button>
                                 :
