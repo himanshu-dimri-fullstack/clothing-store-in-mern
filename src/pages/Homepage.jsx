@@ -7,8 +7,6 @@ import SubCategoryCard from "../components/SubCategoryCard.jsx";
 
 const Homepage = () => {
     const [loading, setLoading] = useState(true);
-    const [menSubCategories, setMenSubCategories] = useState([]);
-    const [womenSubCategories, setWomenSubCategories] = useState([]);
     const [womenProducts, setWomenProducts] = useState([]);
     const [menProducts, setMenProducts] = useState([]);
 
@@ -17,16 +15,12 @@ const Homepage = () => {
         const fetchProducts = async () => {
             const menSlug = "men";
             const womenSlug = "women";
-            const [fetchMenSubCat, fetchWomenSubCat, fetchMenProducts, fetchWomenProducts] = await Promise.all(
+            const [fetchMenProducts, fetchWomenProducts] = await Promise.all(
                 [
-                    getSubCategories({ "slug": menSlug }),
-                    getSubCategories({ "slug": womenSlug }),
-                    getProducts({ "slug": menSlug }),
-                    getProducts({ "slug": womenSlug })
+                    getProducts({ "catSlug": menSlug }),
+                    getProducts({ "catSlug": womenSlug })
                 ]
             );
-            setMenSubCategories(fetchMenSubCat);
-            setWomenSubCategories(fetchWomenSubCat);
             setMenProducts(fetchMenProducts);
             setWomenProducts(fetchWomenProducts);
             setLoading(false);
@@ -51,8 +45,6 @@ const Homepage = () => {
                 </div>
             </div>
 
-            <h2 className="text-lg sm:text-xl lg:text-2xl text-black font-bold mt-8 mb-6">What You’ll Find Here</h2>
-
             {
                 loading &&
 
@@ -61,44 +53,6 @@ const Homepage = () => {
                     <div className="w-12 h-12 border-4 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
                 </div>
 
-            }
-
-            {
-                womenSubCategories.length > 0 &&
-
-                <div className="mt-4 md:mt-6">
-                    <div className="grid grid-cols-12">
-                        {
-                            womenSubCategories.slice(0, 6).map((item) => {
-                                return (
-                                    <Link to="/" key={item.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
-                                        <SubCategoryCard item={item} />
-                                    </Link>
-                                )
-                            })
-                        }
-
-                    </div>
-                </div>
-            }
-
-            {
-                menSubCategories.length > 0 &&
-
-                <div className="mt-4 md:mt-6">
-                    <div className="grid grid-cols-12">
-                        {
-                            menSubCategories.slice(0, 6).map((item) => {
-                                return (
-                                    <Link to="/" key={item.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
-                                        <SubCategoryCard item={item} />
-                                    </Link>
-                                )
-                            })
-                        }
-
-                    </div>
-                </div>
             }
 
             {
@@ -115,9 +69,9 @@ const Homepage = () => {
                         {
                             womenProducts.slice(0, 12).map((product) => {
                                 return (
-                                    <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                    <Link to={`/products/women/${product.slug}`} key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
-                                    </div>
+                                    </Link>
                                 )
                             })
                         }
@@ -139,9 +93,9 @@ const Homepage = () => {
                         {
                             menProducts.slice(0, 12).map((product) => {
                                 return (
-                                    <div key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                    <Link to={`/products/men/${product.slug}`} key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
-                                    </div>
+                                    </Link>
                                 )
                             })
                         }

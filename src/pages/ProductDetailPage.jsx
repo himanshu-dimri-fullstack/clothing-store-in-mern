@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getCategory, getProduct } from "../api/api.js";
+import { CartContext } from "../context/CartContext.jsx";
 
 const ProductDetailPage = () => {
     const { catSlug, slug } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
     const [category, setCategory] = useState(null);
+    const [isAdded, setIsAdded] = useState(null);
+
+    const { addToCart, cart } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -18,6 +22,8 @@ const ProductDetailPage = () => {
                 setCategory(categoryData[0]?.title || "Unknown Category");
                 console.log({ "productData": productData });
                 setProduct(productData[0]);
+                const exist = cart.find(item => item.id == productData[0].id);
+                setIsAdded(exist);
 
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -28,6 +34,12 @@ const ProductDetailPage = () => {
 
         fetchProduct();
     }, [catSlug, slug]);
+
+    const onClick = (product) => {
+        addToCart(product);
+        setIsAdded(product);
+    }
+
 
     if (loading) {
         return (
@@ -84,9 +96,18 @@ const ProductDetailPage = () => {
                     </div>
 
                     <div className="flex gap-4 mt-3 md:mt-6">
-                        <button className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
-                            Add to Cart
-                        </button>
+
+                        {
+                            isAdded ?
+                                <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                                    View Cart
+                                </button>
+                                :
+                                <button onClick={() => onClick(product)} className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
+                                    Add to Cart
+                                </button>
+
+                        }
 
                         <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
                             Buy Now

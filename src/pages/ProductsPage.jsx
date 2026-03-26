@@ -9,7 +9,7 @@ import Sidebar from "../components/Sidebar.jsx";
 import SidebarMobile from "../components/SidebarMobile.jsx";
 
 const ProductsPage = () => {
-    const { slug } = useParams();
+    const { catSlug } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [loading, setLoading] = useState(true);
@@ -36,15 +36,16 @@ const ProductsPage = () => {
                     categoriesData,
                     subCategoriesData
                 ] = await Promise.all([
-                    getCategory({ slug }),
-                    getProducts({ slug, subCatSlug, page, limit }),
+                    getCategory({ catSlug }),
+                    getProducts({ catSlug, subCatSlug, page, limit }),
                     getCategories(),
-                    getSubCategories({ slug })
+                    getSubCategories({ catSlug })
                 ]);
 
                 setCategories(categoriesData);
                 setSubCategories(subCategoriesData);
                 setCategory(categoryData[0]?.title);
+                console.log({ "categoryname": categoryData[0]?.title })
 
                 setProducts(productsData.data);
                 setTotalPages(productsData.pages);
@@ -59,7 +60,7 @@ const ProductsPage = () => {
         };
 
         fetchData();
-    }, [slug, page, subCatSlug]);
+    }, [catSlug, page, subCatSlug]);
 
     const handlePageChange = (newPage) => {
         const params = {
@@ -107,7 +108,7 @@ const ProductsPage = () => {
             <SidebarMobile
                 categories={categories}
                 subCategories={subCategories}
-                slug={slug}
+                slug={catSlug}
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
                 SlidersHorizontal={SlidersHorizontal}
@@ -122,7 +123,7 @@ const ProductsPage = () => {
                     <Sidebar
                         categories={categories}
                         subCategories={subCategories}
-                        slug={slug}
+                        slug={catSlug}
                         subCatSlug={subCatSlug}
                         handleSubCategory={handleSubCategory}
                     />
@@ -132,7 +133,7 @@ const ProductsPage = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {products.map(product => (
-                            <Link key={product.id} to={`/products/${slug}/${product.slug}`}>
+                            <Link key={product.id} to={`/products/${catSlug}/${product.slug}`}>
                                 <ProductCard product={product} />
                             </Link>
                         ))}

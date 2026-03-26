@@ -1,7 +1,12 @@
 import { ShoppingCart, User } from "lucide-react"
+import { useContext } from "react"
 import { Link } from "react-router-dom"
+import { CartContext } from "../../context/CartContext"
 
 const NavbarTop = () => {
+
+    const { cart } = useContext(CartContext);
+
     return (
         <div className="container mx-auto pt-3 px-3">
             <div className="flex h-10 lg:h-12 justify-between items-center gap-3">
@@ -14,8 +19,24 @@ const NavbarTop = () => {
                 </div>
                 <div className="flex gap-6">
                     <div className="flex items-center gap-1">
-                        <ShoppingCart size={16} strokeWidth={2} />
-                        <span className="text-sm text-black font-semibold">Cart</span>
+                        {
+                            cart.length > 0 ?
+                                <>
+                                    <ShoppingCart size={16} strokeWidth={2} />
+                                    <span className="text-sm text-black font-semibold">Cart</span>
+                                    <span className="flex items-center justify-center w-5 h-5 text-xs text-white font-semibold bg-[#003963] rounded-full">
+                                        {cart.length}
+                                    </span>
+                                </>
+
+                                :
+                                <>
+                                    <ShoppingCart size={16} strokeWidth={2} />
+                                    <span className="text-sm text-black font-semibold">Cart</span>
+                                </>
+
+
+                        }
                     </div>
                     <div className="flex gap-2">
                         <button className="text-sm text-white bg-[#003963] border border-[#003963]
