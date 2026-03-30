@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, "Enter name"],
             trim: true
         },
 
@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
 
         price: {
             type: Number,
-            required: true
+            required: [true, "Enter price"]
         },
 
         discountPrice: {
@@ -35,9 +35,9 @@ const productSchema = new mongoose.Schema(
             required: true
         },
 
-        subCategory: {
+        subcategory: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "SubCategory",
+            ref: "Subcategory",
             required: true
         },
 
@@ -63,7 +63,7 @@ const productSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-productSchema.index({ slug: 1 });
-productSchema.index({ category: 1, subCategory: 1 });
+productSchema.index({ subcategory: 1 })
+productSchema.index({ category: 1, subcategory: 1 });
 
 export default mongoose.model("Product", productSchema);
