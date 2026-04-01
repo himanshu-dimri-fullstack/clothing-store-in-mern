@@ -7,11 +7,6 @@ export const signupUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
-        const existUser = await User.findOne({ email });
-        if (existUser) {
-            return res.status(400).json({ message: "Email already exist" })
-        }
-
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await User.create({
@@ -27,7 +22,7 @@ export const signupUser = async (req, res) => {
 
     }
     catch (error) {
-        return handleResponseError(res, error);
+        return handleResponseError(error, res);
     }
 }
 
@@ -47,7 +42,7 @@ export const loginUser = async (req, res) => {
     }
 }
 
-export const adminDashboard = async (req, res) => {
+export const dashboard = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
