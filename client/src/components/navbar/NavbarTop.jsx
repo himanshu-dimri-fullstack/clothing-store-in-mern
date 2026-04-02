@@ -1,11 +1,14 @@
 import { ShoppingCart, User } from "lucide-react"
 import { useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { CartContext } from "../../context/CartContext"
+import { AuthContext } from "../../context/AuthContext"
 
 const NavbarTop = () => {
-
+    const navigate = useNavigate();
     const { cart } = useContext(CartContext);
+    const { user } = useContext(AuthContext);
+    console.log(user);
 
     return (
         <div className="container mx-auto pt-3 px-3">
@@ -38,10 +41,19 @@ const NavbarTop = () => {
 
                         }
                     </Link>
-                    <div className="flex gap-2">
-                        <button className="text-sm text-white bg-[#003963] border border-[#003963]
+                    {
+                        user ?
+                            <div className="flex gap-2">
+                                <button className="text-sm text-white bg-[#003963] border border-[#003963]
+                        rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black">{user.name}</button>
+                            </div>
+                            :
+                            <div className="flex gap-2">
+                                <button onClick={() => navigate("/login")} className="text-sm text-white bg-[#003963] border border-[#003963]
                         rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black">Login</button>
-                    </div>
+                            </div>
+                    }
+
                 </div>
             </div>
             <div className="block lg:hidden my-3">

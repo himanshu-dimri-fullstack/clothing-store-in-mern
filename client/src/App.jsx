@@ -12,6 +12,8 @@ import Cart from "./pages/Cart";
 import AdminLayout from "./admin/AdminLayout";
 import Home from "./admin/pages/Home";
 import Category from "./admin/pages/Category";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/products/:catSlug" element={<ProductsPage />} />
         <Route path="/products/:catSlug/:slug" element={<ProductDetailPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Route>
 
       {/* ADMIN ROUTES */}
