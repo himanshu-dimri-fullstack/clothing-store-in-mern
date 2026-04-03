@@ -7,7 +7,7 @@ const Signup = () => {
         name: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
     });
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -33,7 +33,13 @@ const Signup = () => {
             console.log({ "role": data.user.role });
         }
         catch (error) {
-            setErrorMessage(error.response.data.message)
+            setErrorMessage(error.response.data.message);
+            setFormData({
+                name: "",
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
         }
 
 
@@ -120,7 +126,7 @@ const Signup = () => {
                             </div>
 
                             {
-                                errorMessage && <span className="text-[#003963] py-2">{errorMessage}</span>
+                                errorMessage && <div className="text-red-500 py-2">{errorMessage}</div>
                             }
 
                             <button

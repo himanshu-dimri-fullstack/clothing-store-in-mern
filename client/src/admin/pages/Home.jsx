@@ -8,25 +8,8 @@ const Home = () => {
 
     const navigate = useNavigate();
 
-    const { user, setUser } = useContext(AuthContext);
-    const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await API.get("api/admin");
-                const userData = res.data;
-                setUser(userData);
-                setLoading(false);
-            }
-            catch (error) {
-                navigate("/");
-            }
-        }
-
-        fetchUser();
-    }, [])
+    const { user, setUser } = useContext(AuthContext);
 
     const handleLogout = async () => {
         try {
@@ -51,13 +34,6 @@ const Home = () => {
         { title: "Products", value: "120", icon: <Package size={20} /> },
     ];
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen bg-gray-50">
-                <div className="w-12 h-12 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
-            </div>
-        );
-    }
 
     return (
         <div className="space-y-8 bg-gray-50 min-h-screen p-6">

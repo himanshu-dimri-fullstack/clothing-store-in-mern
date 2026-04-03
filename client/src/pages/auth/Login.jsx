@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -29,12 +29,31 @@ const Login = () => {
                 setErrorMessage("");
                 navigate("/admin");
             }
+            else {
+                setUser(data.user);
+                setErrorMessage("");
+                navigate("/");
+            }
         }
         catch (error) {
             setErrorMessage(error.response.data.message)
+            setFormData({
+                email: "",
+                password: "",
+            })
         }
+    }
 
-    };
+    useEffect(() => {
+        if (!errorMessage) return;
+
+        const timer = setTimeout(() => {
+            setErrorMessage("");
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [errorMessage]);
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -86,7 +105,7 @@ const Login = () => {
                             </div>
 
                             {
-                                errorMessage && <span className="text-[#003963] py-2">{errorMessage}</span>
+                                errorMessage && <span className="text-red-500 py-2">{errorMessage}</span>
                             }
 
                             <div className="flex items-center justify-end text-sm">
