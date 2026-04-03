@@ -14,7 +14,10 @@ export const createSubcategory = async (req, res) => {
 
 export const getSubcategory = async (_, res) => {
     try {
-        const subcategory = await Subcategory.find();
+        const subcategory = await Subcategory
+            .find()
+            .populate("category", "name");
+
         res.status(200).json(subcategory);
     }
     catch (error) {
