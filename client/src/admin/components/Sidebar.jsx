@@ -22,7 +22,7 @@ const Sidebar = () => {
                     SubCategory
                 </NavLink>
 
-                <NavLink to="/admin/products" className={linkClass}>
+                <NavLink to="/admin/product" className={linkClass}>
                     Products
                 </NavLink>
             </nav>

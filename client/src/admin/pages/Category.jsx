@@ -63,11 +63,11 @@ const Category = () => {
                 await API.put(`/api/categories/${editId}`, categoryData);
                 setSuccessMessage("Category Updated successfully");
                 setEditId(null);
-                fetchCategories()
+                fetchCategories();
             } else {
                 await API.post("/api/categories", categoryData);
                 setSuccessMessage("Category Created successfully");
-                fetchCategories()
+                fetchCategories();
             }
 
             setName("");
@@ -92,7 +92,7 @@ const Category = () => {
         try {
             await API.delete(`/api/categories/${deleteId}`);
             setSuccessMessage("Category Deleted successfully");
-            fetchCategories()
+            fetchCategories();
         } catch (error) {
             setErrorMessage(error.response?.data?.message || "Delete failed");
         } finally {
@@ -102,10 +102,10 @@ const Category = () => {
     };
 
     return (
-        <div className="p-6 max-w-3xl mx-auto">
+        <div className="p-6 max-w-4xl mx-auto">
 
-            <div className="bg-white shadow-md rounded-2xl p-6 mb-6">
-                <h2 className="text-xl font-semibold mb-4">
+            <div className="bg-white/70 backdrop-blur-lg border border-gray-100 shadow-xl rounded-3xl p-6 mb-8">
+                <h2 className="text-2xl font-semibold mb-4">
                     {editId ? "Update Category" : "Add Category"}
                 </h2>
 
@@ -120,45 +120,47 @@ const Category = () => {
                     <input
                         type="text"
                         placeholder="Enter category name"
-                        className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#003963]"
+                        className="flex-1 px-4 py-3 rounded-xl border border-[#ccc] focus:outline-none focus:ring-2 focus:ring-[#003963]"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
 
                     <button
                         type="submit"
-                        className="px-6 py-2 rounded-lg text-white bg-[#003963]"
+                        className="px-6 py-3 rounded-xl text-white bg-linear-to-r from-[#003963] to-[#005b99] hover:opacity-90 transition"
                     >
                         {editId ? "Update" : "Add"}
                     </button>
                 </form>
             </div>
 
-            <div className="bg-white shadow-md rounded-2xl p-6">
-                <h2 className="text-xl font-semibold mb-4">All Categories</h2>
+            <div className="bg-white/70 backdrop-blur-lg border border-gray-100 shadow-xl rounded-3xl p-6">
+                <h2 className="text-2xl font-semibold mb-6">All Categories</h2>
 
                 {categories.length === 0 ? (
                     <p className="text-gray-500">No categories Available</p>
                 ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         {categories.map((item) => (
                             <div
                                 key={item._id}
-                                className="flex justify-between items-center border p-3 rounded-lg"
+                                className="flex justify-between items-center p-4 rounded-2xl border border-[#ccc] hover:shadow-md transition"
                             >
-                                <span className="font-medium">{item.name}</span>
+                                <span className="font-semibold text-lg">
+                                    {item.name}
+                                </span>
 
-                                <div className="flex gap-2">
+                                <div className="flex gap-3">
                                     <button
                                         onClick={() => handleEdit(item)}
-                                        className="bg-[#003963] px-4 py-1 rounded text-white"
+                                        className="px-4 py-1.5 rounded-lg bg-[#003963] text-white hover:bg-[#002944] transition"
                                     >
                                         Update
                                     </button>
 
                                     <button
                                         onClick={() => handleDeleteClick(item._id)}
-                                        className="bg-red-500 px-4 py-1 rounded text-white"
+                                        className="px-4 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
                                     >
                                         Delete
                                     </button>
@@ -170,8 +172,8 @@ const Category = () => {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-2xl p-6 w-80 shadow-xl animate-fadeIn">
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="bg-white rounded-3xl p-6 w-80 shadow-2xl">
                         <h3 className="text-lg font-semibold mb-2">
                             Confirm Delete
                         </h3>
@@ -182,14 +184,14 @@ const Category = () => {
                         <div className="flex justify-end gap-3">
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="px-4 py-1 rounded-lg border"
+                                className="px-4 py-1.5 rounded-lg border"
                             >
                                 Cancel
                             </button>
 
                             <button
                                 onClick={confirmDelete}
-                                className="px-4 py-1 rounded-lg bg-red-500 text-white"
+                                className="px-4 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
                             >
                                 Delete
                             </button>

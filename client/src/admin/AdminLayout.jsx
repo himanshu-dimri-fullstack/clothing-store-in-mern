@@ -18,7 +18,7 @@ const AdminLayout = () => {
                 setLoading(false);
             }
             catch (error) {
-                if (user?.user?.role == "user") {
+                if (user?.role == "user") {
                     navigate("/")
                 }
                 else {
