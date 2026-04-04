@@ -83,10 +83,21 @@ const Product = () => {
         }
     };
 
+    const generateSlug = (text) => {
+        return text
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-");
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const slug = generateSlug(name);
+
         const formData = new FormData();
+        formData.append("slug", slug);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("price", price);
@@ -299,12 +310,29 @@ const Product = () => {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-3xl w-80">
-                        <p className="mb-4">Confirm Delete?</p>
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="bg-white rounded-3xl p-6 w-80 shadow-2xl">
+                        <h3 className="text-lg font-semibold mb-2">
+                            Confirm Delete
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-4">
+                            Are you sure you want to delete this product?
+                        </p>
+
                         <div className="flex justify-end gap-3">
-                            <button onClick={() => setShowModal(false)}>Cancel</button>
-                            <button onClick={confirmDelete} className="bg-red-500 text-white px-4 py-1 rounded">Delete</button>
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className="px-4 py-1.5 rounded-lg border"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={confirmDelete}
+                                className="px-4 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
