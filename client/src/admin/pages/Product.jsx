@@ -3,8 +3,6 @@ import API from "../api/axios";
 
 const Product = () => {
 
-    const fileInputRef = useRef(null);
-
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -13,6 +11,8 @@ const Product = () => {
     const [sizes, setSizes] = useState([]);
     const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
+    const [existingImages, setExistingImages] = useState([]);
+    const [deletedImages, setDeletedImages] = useState([]);
 
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
@@ -56,10 +56,12 @@ const Product = () => {
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        setImages(files);
-        const previews = files.map((file) => URL.createObjectURL(file));
-        setPreviewImages(previews);
-    };
+
+        const previews = files.map(file => URL.createObjectURL(file));
+
+        setImages(prev => [...prev, ...files]);
+        setPreviewImages(prev => [...prev, ...previews]);
+    }
 
     const handleSizeChange = (size) => {
         if (sizes.includes(size)) {
@@ -72,15 +74,13 @@ const Product = () => {
     const handleRemoveImage = (index) => {
         URL.revokeObjectURL(previewImages[index]);
 
-        const updatedImages = images.filter((_, i) => i !== index);
-        const updatedPreviews = previewImages.filter((_, i) => i !== index);
+        setImages(prev => prev.filter((_, i) => i !== index));
+        setPreviewImages(prev => prev.filter((_, i) => i !== index));
+    };
 
-        setImages(updatedImages);
-        setPreviewImages(updatedPreviews);
-
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
+    const handleRemoveExistingImage = (img) => {
+        setExistingImages(prev => prev.filter(i => i !== img));
+        setDeletedImages(prev => [...prev, img]);
     };
 
     const generateSlug = (text) => {
@@ -106,6 +106,7 @@ const Product = () => {
         formData.append("sizes", JSON.stringify(sizes));
 
         images.forEach((img) => formData.append("images", img));
+        formData.append("deletedImages", JSON.stringify(deletedImages));
 
         try {
             if (editId) {
@@ -125,6 +126,7 @@ const Product = () => {
             setSizes([]);
             setImages([]);
             setPreviewImages([]);
+            setExistingImages([]);
 
             fetchData();
         } catch (err) {
@@ -140,6 +142,10 @@ const Product = () => {
         setSubCategoryId(item.subcategory?._id);
         setSizes(item.sizes || []);
         setEditId(item._id);
+        setExistingImages(item.images || []);
+        setImages([]);
+        setPreviewImages([]);
+        setDeletedImages([]);
     };
 
     const handleDeleteClick = (id) => {
@@ -151,6 +157,19 @@ const Product = () => {
         try {
             await API.delete(`/api/products/${deleteId}`);
             setSuccessMessage("Deleted successfully");
+
+            setName("");
+            setDescription("");
+            setPrice("");
+            setCategoryId("");
+            setSubCategoryId("");
+            setSizes([]);
+            setImages([]);
+            setPreviewImages([]);
+            setExistingImages([]);
+            setDeletedImages([]);
+            setEditId(null);
+
             fetchData();
         } catch (err) {
             setErrorMessage(err.response?.data?.message || "Delete failed");
@@ -262,6 +281,25 @@ const Product = () => {
                         >
                             Upload Images
                         </label>
+
+                        <div className="flex gap-3 mt-7 flex-wrap">
+                            {existingImages.map((img, i) => (
+                                <div key={i} className="relative">
+                                    <img
+                                        src={img}
+                                        className="w-20 h-20 object-cover rounded-lg"
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveExistingImage(img)}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
 
                         <div className="flex gap-3 mt-7 flex-wrap">
                             {previewImages.map((img, i) => (
