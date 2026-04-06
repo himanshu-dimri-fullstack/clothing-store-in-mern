@@ -12,6 +12,7 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Subcategory from "./admin/pages/Subcategory";
 import Product from "./admin/pages/Product";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Route>
 
       {/* ADMIN ROUTES */}

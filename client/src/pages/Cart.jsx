@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+    const navigate = useNavigate()
     const { cart, increaseQty, decreaseQty, removeItem } = useContext(CartContext);
 
     const total = cart.reduce(
@@ -100,7 +102,7 @@ const Cart = () => {
                             <span>₹{total}</span>
                         </div>
 
-                        <button className="w-full bg-[#003963] hover:bg-white hover:text-[#003963] border border-[#003963] text-white py-2 rounded-lg transition">
+                        <button onClick={() => navigate("/checkout")} className="w-full bg-[#003963] hover:bg-white hover:text-[#003963] border border-[#003963] text-white py-2 rounded-lg transition">
                             Checkout
                         </button>
                     </div>
