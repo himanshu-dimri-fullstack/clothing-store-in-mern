@@ -4,31 +4,14 @@ import { handleResponseError } from "../utils/errorUtils.js"
 
 export const addToCart = async (req, res) => {
     try {
-        const { productId, qty } = req.body;
-        const userId = req.user.id;
-
-        const existingItem = await Cart.findOne({
-            user: userId,
-            product: productId
-        });
-
-        if (existingItem) {
-            existingItem.qty += qty || 1;
-            await existingItem.save();
-
-            return res.status(200).json({
-                message: "Cart updated",
-                data: existingItem
-            });
-        }
-
-        const product = await Product.findById(productId);
+        const { userId, productId, qty } = req.body;
+        console.log(productId);
 
         const newItem = await Cart.create({
             user: userId,
             product: productId,
             qty: qty || 1,
-            priceWhenAdded: product.price
+            priceWhenAdded: 999
         });
 
         res.status(201).json({
@@ -45,8 +28,7 @@ export const getCart = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        const cart = await Cart.find({ user: userId })
-            .populate("product");
+        const cart = await Cart.find({ user: userId });
 
         res.status(200).json(cart);
 
@@ -57,7 +39,7 @@ export const getCart = async (req, res) => {
 
 export const updateCartItem = async (req, res) => {
     try {
-        const { qty } = req.body;
+        const { action } = req.body;
 
         const item = await Cart.findById(req.params.id);
 
@@ -65,7 +47,13 @@ export const updateCartItem = async (req, res) => {
             return res.status(404).json({ message: "Item not found" });
         }
 
-        item.qty = qty;
+        if (action === "inc") {
+            item.qty += 1;
+        }
+        else if (action === "dec") {
+            item.qty -= 1;
+        }
+
         await item.save();
 
         res.status(200).json({

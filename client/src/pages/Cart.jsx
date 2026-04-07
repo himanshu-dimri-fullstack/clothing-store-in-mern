@@ -1,15 +1,36 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     const { cart, increaseQty, decreaseQty, removeItem } = useContext(CartContext);
+    const { user } = useContext(AuthContext); // ✅ user le liya
 
     const total = cart.reduce(
         (acc, item) => acc + item.price * item.qty,
         0
     );
+
+    if (!user) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="bg-white p-10 rounded-xl shadow text-center">
+                    <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                        Please login to view your cart
+                    </h2>
+                    <button
+                        onClick={() => navigate("/login")}
+                        className="bg-[#003963] text-white px-6 py-2 rounded-lg hover:bg-white hover:text-[#003963] border border-[#003963] transition"
+                    >
+                        Login
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
@@ -30,21 +51,21 @@ const Cart = () => {
                     ) : (
                         cart.map((item) => (
                             <div
-                                key={item.id}
+                                key={item._id}
                                 className="bg-white p-4 rounded-xl shadow grid grid-cols-1 md:grid-cols-4 items-center gap-4"
                             >
                                 <div className="flex items-center gap-4 md:col-span-2">
                                     <img
-                                        src={item.thumbnail}
+                                        src={item.product?.thumbnail}
                                         alt=""
-                                        className="w-20 h-20 object-cover rounded-lg border border-transparent"
+                                        className="w-20 h-20 object-cover rounded-lg"
                                     />
                                     <div>
                                         <h3 className="font-semibold text-gray-800">
-                                            {item.title}
+                                            {item.product?.title}
                                         </h3>
                                         <p className="text-gray-500 text-sm">
-                                            ₹{item.price}
+                                            ₹{item.priceWhenAdded}
                                         </p>
                                     </div>
                                 </div>
@@ -67,7 +88,7 @@ const Cart = () => {
 
                                 <div className="text-center md:text-right">
                                     <p className="font-semibold text-gray-800">
-                                        ₹{item.price * item.qty}
+                                        ₹{item.priceWhenAdded * item.qty}
                                     </p>
                                     <button
                                         onClick={() => removeItem(item)}
@@ -102,7 +123,10 @@ const Cart = () => {
                             <span>₹{total}</span>
                         </div>
 
-                        <button onClick={() => navigate("/checkout")} className="w-full bg-[#003963] hover:bg-white hover:text-[#003963] border border-[#003963] text-white py-2 rounded-lg transition">
+                        <button
+                            onClick={() => navigate("/checkout")}
+                            className="w-full bg-[#003963] hover:bg-white hover:text-[#003963] border border-[#003963] text-white py-2 rounded-lg transition"
+                        >
                             Checkout
                         </button>
                     </div>

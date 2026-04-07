@@ -5,6 +5,7 @@ import categoryRoutes from "./routes/categoryRoutes.js"
 import subcategoryRoutes from "./routes/subcategoryRoutes.js"
 import productRoutes from "./routes/productRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import cartRoutes from "./routes/cartRoutes.js"
 import cors from "cors"
 import cookieParser from "cookie-parser";
 
@@ -28,6 +29,7 @@ app.use("/api", categoryRoutes)
 app.use("/api", subcategoryRoutes)
 app.use("/api", productRoutes)
 app.use("/api", userRoutes)
+app.use("/api", cartRoutes)
 
 const PORT = process.env.PORT || 3000;
 
