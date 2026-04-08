@@ -8,8 +8,6 @@ export const CartContext = createContext();
 const CartProvider = ({ children }) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
-    console.log(user.id);
-    console.log(user);
 
     const [cart, setCart] = useState([]);
 

@@ -10,12 +10,6 @@ const storage = multer.diskStorage({
 
         const ext = path.extname(file.originalname).toLowerCase();
 
-        const allowedExt = [".jpg", ".jpeg", ".png"];
-
-        if (!allowedExt.includes(ext)) {
-            return cb(new Error("Only JPG/PNG allowed"));
-        }
-
         const newName = crypto.randomUUID() + ext;
 
         cb(null, newName);
@@ -23,7 +17,12 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    const allowedTypes = ["image/jpeg", "image/png"];
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/avif"
+    ];
 
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
