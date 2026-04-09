@@ -6,10 +6,10 @@ import path from "path";
 
 export const createProduct = async (req, res) => {
     try {
-        const BASE_URL = `${req.protocol}://${req.get("host")}`;
 
         const imageUrls = req.files?.map(file => {
-            return `${BASE_URL}/${file.path}`;
+            console.log(file);
+            return `/uploads/${file.filename}`;
         }) || [];
 
         const product = await Product.create({
@@ -57,7 +57,11 @@ export const getProductByIdAndUpdate = async (req, res) => {
         let updateData = { ...req.body };
 
         if (req.body.sizes) {
-            updateData.sizes = JSON.parse(req.body.sizes);
+            try {
+                updateData.sizes = JSON.parse(req.body.sizes);
+            } catch {
+                return res.status(400).json({ message: "Invalid sizes format" });
+            }
         }
 
         const product = await Product.findById(req.params.id);
@@ -66,17 +70,26 @@ export const getProductByIdAndUpdate = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        const BASE_URL = `${req.protocol}://${req.get("host")}`;
-
         let deletedImages = [];
         if (req.body.deletedImages) {
-            deletedImages = JSON.parse(req.body.deletedImages);
+            try {
+                deletedImages = JSON.parse(req.body.deletedImages);
+            } catch {
+                return res.status(400).json({ message: "Invalid deletedImages format" });
+            }
         }
 
-        deletedImages.forEach((imgUrl) => {
+        deletedImages = [...new Set(deletedImages)];
+
+        deletedImages.forEach((imgPath) => {
             try {
-                const filePath = path.join(process.cwd(), imgUrl.replace(BASE_URL + "/", ""));
-                fs.unlinkSync(filePath);
+                const cleanPath = imgPath.replace(/^\/+/, "");
+
+                const filePath = path.join(process.cwd(), cleanPath);
+
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
             } catch (err) {
                 console.log("Delete error:", err.message);
             }
@@ -87,9 +100,9 @@ export const getProductByIdAndUpdate = async (req, res) => {
         );
 
         if (req.files && req.files.length > 0) {
-            const newImageUrls = req.files.map(file => {
-                return `${BASE_URL}/${file.path}`;
-            });
+            const newImageUrls = req.files.map(
+                (file) => `/uploads/${file.filename}`
+            );
 
             updatedImages = [...updatedImages, ...newImageUrls];
         }
@@ -117,12 +130,11 @@ export const deleteProductById = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        const BASE_URL = `${req.protocol}://${req.get("host")}`;
-
-        product.images.forEach((imgUrl) => {
+        product.images.forEach((imgPath) => {
             try {
-                const relativePath = imgUrl.replace(BASE_URL + "/", "");
-                const filePath = path.join(process.cwd(), relativePath);
+                const cleanPath = imgPath.replace(/^\/+/, "");
+
+                const filePath = path.join(process.cwd(), cleanPath);
 
                 if (fs.existsSync(filePath)) {
                     fs.unlinkSync(filePath);
@@ -137,6 +149,6 @@ export const deleteProductById = async (req, res) => {
         res.status(200).json({ message: "Product deleted successfully" });
 
     } catch (error) {
-        return handleResponseError(error, res, "Product");
+        return handleResponseError(error, res);
     }
 };

@@ -2,28 +2,33 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard"
 import { useEffect, useState } from "react";
 import { getProducts, getSubCategories } from "../api/api.js"
-import SubCategoryCard from "../components/SubCategoryCard.jsx";
+import API from "../api/axios.js";
 
 
 const Homepage = () => {
     const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
     const [womenProducts, setWomenProducts] = useState([]);
     const [menProducts, setMenProducts] = useState([]);
 
     useEffect(() => {
 
         const fetchProducts = async () => {
-            const menSlug = "men";
-            const womenSlug = "women";
-            const [fetchMenProducts, fetchWomenProducts] = await Promise.all(
-                [
-                    getProducts({ "catSlug": menSlug }),
-                    getProducts({ "catSlug": womenSlug })
-                ]
-            );
-            setMenProducts(fetchMenProducts);
-            setWomenProducts(fetchWomenProducts);
-            setLoading(false);
+            try {
+                const fetchProductsRes = await API.get("/api/products");
+                const data = fetchProductsRes.data;
+                setProducts(data);
+
+                const WomenProducts = data.filter((item) => item.category.slug == "women");
+                const menProducts = data.filter((item) => item.category.slug == "men");
+
+                setWomenProducts(WomenProducts);
+                setMenProducts(menProducts);
+                setLoading(false);
+            }
+            catch (error) {
+                console.log(error?.response?.data?.message || error.message);
+            }
         }
         fetchProducts();
     }, [])
@@ -69,7 +74,7 @@ const Homepage = () => {
                         {
                             womenProducts.slice(0, 12).map((product) => {
                                 return (
-                                    <Link to={`/products/women/${product.slug}`} key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                    <Link to={`/products/women/${product.slug}`} key={product._id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
                                     </Link>
                                 )
@@ -93,7 +98,7 @@ const Homepage = () => {
                         {
                             menProducts.slice(0, 12).map((product) => {
                                 return (
-                                    <Link to={`/products/men/${product.slug}`} key={product.id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
+                                    <Link to={`/products/men/${product.slug}`} key={product._id} className="col-span-6 md:col-span-3 lg:col-span-2 pr-2">
                                         <ProductCard product={product} />
                                     </Link>
                                 )
