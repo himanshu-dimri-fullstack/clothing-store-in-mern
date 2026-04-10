@@ -24,7 +24,6 @@ const ProductsPage = () => {
     const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 12;
     const subCatSlug = searchParams.get("type") || "";
-    console.log(subCatSlug);
 
     const fetchData = async () => {
         try {

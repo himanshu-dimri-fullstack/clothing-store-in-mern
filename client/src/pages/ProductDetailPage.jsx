@@ -1,10 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getCategory, getProduct } from "../api/api.js";
 import { CartContext } from "../context/CartContext.jsx";
+import API from "../api/axios.js";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 const ProductDetailPage = () => {
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
+
+    const { user } = useContext(AuthContext);
     const { catSlug, slug } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -16,15 +20,15 @@ const ProductDetailPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const [categoryData, productData] = await Promise.all([
-                    getCategory({ catSlug }),
-                    getProduct({ slug }),
-                ]);
-                setCategory(categoryData[0]?.title || "Unknown Category");
-                console.log({ "productData": productData });
-                setProduct(productData[0]);
-                const exist = cart.find(item => item.id == productData[0].id);
-                setIsAdded(exist);
+                const productRes = await API.get(`/api/products/${slug}`)
+                const data = productRes.data;
+                setCategory(data.category.name || "Unknown Category");
+                setProduct(data);
+
+                if (user) {
+                    const exist = cart.find(item => item._id == data._id);
+                    setIsAdded(exist);
+                }
 
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -36,9 +40,21 @@ const ProductDetailPage = () => {
         fetchProduct();
     }, [catSlug, slug]);
 
-    const onClick = (product) => {
-        addToCart(product);
-        setIsAdded(product);
+    const onClick = async (product) => {
+        if (user) {
+            try {
+                await addToCart(product);
+            }
+            catch (error) {
+                console.log(error.message);
+                return;
+            }
+            setIsAdded(product);
+        }
+        else {
+            navigate("/login");
+        }
+
     }
 
 
@@ -67,15 +83,16 @@ const ProductDetailPage = () => {
                 <span className="px-1">/</span>
                 <Link to={`/products/${catSlug}`}>{category}</Link>
                 <span className="px-1">/</span>
-                <span>{product.title}</span>
+                <span>{product.name}</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 <div className="bg-gray-50 p-4 rounded-lg shadow col-span-1 flex justify-center items-center">
+
                     <img
-                        src={product.thumbnail}
-                        alt={product.title}
+                        src={`${baseURL}${product.images[0]}`}
+                        alt={product.name}
                         className="object-contain h-50 md:h-90"
                     />
                 </div>
@@ -83,7 +100,7 @@ const ProductDetailPage = () => {
                 <div className="col-span-1 lg:col-span-2 flex flex-col gap-2 md:gap-4">
 
                     <h1 className="text-lg md:text-3xl font-bold text-gray-800">
-                        {product.title}
+                        {product.name}
                     </h1>
 
                     <p className="text-gray-700 leading-relaxed">

@@ -7,7 +7,7 @@ const Cart = () => {
     const navigate = useNavigate();
 
     const { cart, increaseQty, decreaseQty, removeItem } = useContext(CartContext);
-    const { user } = useContext(AuthContext); // ✅ user le liya
+    const { user } = useContext(AuthContext);
 
     const total = cart.reduce(
         (acc, item) => acc + item.price * item.qty,
@@ -56,7 +56,7 @@ const Cart = () => {
                             >
                                 <div className="flex items-center gap-4 md:col-span-2">
                                     <img
-                                        src={item.product?.thumbnail}
+                                        src={item.product?.thu}
                                         alt=""
                                         className="w-20 h-20 object-cover rounded-lg"
                                     />

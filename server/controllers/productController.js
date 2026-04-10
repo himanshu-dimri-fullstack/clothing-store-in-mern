@@ -46,9 +46,6 @@ export const getProducts = async (req, res) => {
         }
 
         const totalProducts = await Product.countDocuments(query);
-        console.log({ "totalProducts": totalProducts })
-        console.log(limit);
-        console.log({ "totalpages": Math.ceil(totalProducts / limit) })
 
         const products = await Product.find(query)
             .populate("category")
@@ -71,6 +68,22 @@ export const getProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
+            .populate("category")
+            .populate("subcategory");
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        res.status(200).json(product);
+    } catch (error) {
+        return handleResponseError(error, res, "Product");
+    }
+};
+
+export const getProductBySlug = async (req, res) => {
+    try {
+        const product = await Product.findOne({ slug: req.params.slug })
             .populate("category")
             .populate("subcategory");
 

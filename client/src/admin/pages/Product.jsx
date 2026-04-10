@@ -3,6 +3,8 @@ import API from "../api/axios";
 
 const Product = () => {
 
+    const baseurl = import.meta.env.VITE_API_BASE_URL;
+
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -37,7 +39,7 @@ const Product = () => {
 
         setCategories(catRes.data);
         setSubCategories(subRes.data);
-        setProducts(prodRes.data);
+        setProducts(prodRes.data.products);
     };
 
     useEffect(() => {
@@ -286,7 +288,7 @@ const Product = () => {
                             {existingImages.map((img, i) => (
                                 <div key={i} className="relative">
                                     <img
-                                        src={img}
+                                        src={`${baseurl}${img}`}
                                         className="w-20 h-20 object-cover rounded-lg"
                                     />
 

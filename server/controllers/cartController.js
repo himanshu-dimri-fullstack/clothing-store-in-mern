@@ -6,6 +6,7 @@ export const addToCart = async (req, res) => {
     try {
         const { userId, productId, qty } = req.body;
         console.log(productId);
+        console.log({ "userId": userId });
 
         const newItem = await Cart.create({
             user: userId,

@@ -13,8 +13,10 @@ const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
         try {
-            const res = await API.get("/api/cart");
-            setCart(res.data);
+            const res = await API.get("/api/cart", user);
+            const data = res.data
+            console.log(data);
+            setCart(data);
         } catch (error) {
             console.log(error?.response?.data?.message);
         }
@@ -25,18 +27,16 @@ const CartProvider = ({ children }) => {
     }, [user]);
 
     const addToCart = async (product) => {
-        if (!user) return navigate("/login");
-        console.log(product);
-
         try {
             await API.post("/api/cart", {
                 userId: user.id,
-                productId: product.id,
+                productId: product._id,
                 qty: 1
             });
             fetchCart();
         } catch (error) {
             console.log(error?.response?.data?.message);
+            throw error;
         }
     };
 

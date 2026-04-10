@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard"
 import { useEffect, useState } from "react";
-import { getProducts, getSubCategories } from "../api/api.js"
 import API from "../api/axios.js";
 
 
@@ -18,8 +17,6 @@ const Homepage = () => {
                     API.get(`/api/products?category=women`),
                     API.get(`/api/products?category=men`)
                 ])
-                console.log(womenRes)
-                console.log(menRes)
 
                 const womenData = womenRes.data.products;
                 const menData = menRes.data.products;
