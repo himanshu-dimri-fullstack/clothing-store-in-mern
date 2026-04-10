@@ -1,4 +1,6 @@
 import Product from "../models/Product.js";
+import Category from "../models/Category.js";
+import Subcategory from "../models/Subcategory.js";
 import { handleResponseError } from "../utils/errorUtils.js";
 import fs from "fs";
 import path from "path";
@@ -24,13 +26,43 @@ export const createProduct = async (req, res) => {
         return handleResponseError(error, res);
     }
 };
-export const getProduct = async (_, res) => {
+export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find()
+        const { category, subcategory } = req.query;
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 12;
+        const skip = (page - 1) * limit;
+
+        let query = {};
+
+        if (category) {
+            const cat = await Category.findOne({ slug: category });
+            if (cat) query.category = cat._id;
+        }
+
+        if (subcategory) {
+            const subCat = await Subcategory.findOne({ slug: subcategory });
+            if (subCat) query.subcategory = subCat._id;
+        }
+
+        const totalProducts = await Product.countDocuments(query);
+        console.log({ "totalProducts": totalProducts })
+        console.log(limit);
+        console.log({ "totalpages": Math.ceil(totalProducts / limit) })
+
+        const products = await Product.find(query)
             .populate("category")
             .populate("subcategory")
+            .skip(skip)
+            .limit(Number(limit));
 
-        res.status(200).json(products);
+        res.status(200).json({
+            products,
+            currentPage: Number(page),
+            totalPages: Math.ceil(totalProducts / limit),
+            totalProducts
+        });
+
     } catch (error) {
         return handleResponseError(error, res);
     }

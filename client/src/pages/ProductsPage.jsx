@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { getProducts, getCategory, getCategories, getSubCategories } from "../api/api.js";
 import { SlidersHorizontal, X } from "lucide-react";
 import Pagination from "react-responsive-pagination";
 import 'react-responsive-pagination/themes/classic-light-dark.css';
 import Sidebar from "../components/Sidebar.jsx";
 import SidebarMobile from "../components/SidebarMobile.jsx";
+import API from "../api/axios.js"
 
 const ProductsPage = () => {
     const { catSlug } = useParams();
@@ -21,51 +21,51 @@ const ProductsPage = () => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const page = parseInt(searchParams.get("_page")) || 1;
-    const limit = parseInt(searchParams.get("_per_page")) || 8;
+    const page = parseInt(searchParams.get("page")) || 1;
+    const limit = parseInt(searchParams.get("limit")) || 12;
     const subCatSlug = searchParams.get("type") || "";
+    console.log(subCatSlug);
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+
+            const [
+                categoryRes,
+                productsRes,
+                categoriesRes,
+                subcategoriesRes
+            ] = await Promise.all([
+                API.get(`/api/categories/${catSlug}`),
+                API.get(`/api/products?category=${catSlug}&subcategory=${subCatSlug}&page=${page}&limit=${limit}`),
+                API.get("api/categories"),
+                API.get(`/api/subcategories?category=${catSlug}`)
+            ]);
+
+            setCategories(categoriesRes.data);
+            setSubCategories(subcategoriesRes.data);
+            setCategory(categoryRes.data?.name);
+
+            setProducts(productsRes.data.products);
+            setTotalPages(productsRes.data.totalPages);
+
+            window.scrollTo(0, 0);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-
-                const [
-                    categoryData,
-                    productsData,
-                    categoriesData,
-                    subCategoriesData
-                ] = await Promise.all([
-                    getCategory({ catSlug }),
-                    getProducts({ catSlug, subCatSlug, page, limit }),
-                    getCategories(),
-                    getSubCategories({ catSlug })
-                ]);
-
-                setCategories(categoriesData);
-                setSubCategories(subCategoriesData);
-                setCategory(categoryData[0]?.title);
-                console.log({ "categoryname": categoryData[0]?.title })
-
-                setProducts(productsData.data);
-                setTotalPages(productsData.pages);
-
-                window.scrollTo(0, 0);
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchData();
     }, [catSlug, page, subCatSlug]);
 
     const handlePageChange = (newPage) => {
         const params = {
-            _page: newPage,
-            _per_page: limit
+            page: newPage,
+            limit: limit
         };
 
         if (subCatSlug) {
@@ -77,8 +77,8 @@ const ProductsPage = () => {
 
     const handleSubCategory = (subSlug) => {
         const params = {
-            _page: 1,
-            _per_page: limit
+            page: 1,
+            limit: limit
         };
 
         if (subSlug !== subCatSlug) {
@@ -86,6 +86,9 @@ const ProductsPage = () => {
         }
 
         setSearchParams(params);
+
+        fetchData();
+
     };
 
     if (loading) {
@@ -133,7 +136,7 @@ const ProductsPage = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {products.map(product => (
-                            <Link key={product.id} to={`/products/${catSlug}/${product.slug}`}>
+                            <Link key={product._id} to={`/products/${catSlug}/${product.slug}`}>
                                 <ProductCard product={product} />
                             </Link>
                         ))}

@@ -15,12 +15,12 @@ const SidebarMobile = ({
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const limit = parseInt(searchParams.get("_per_page")) || 8;
+    const limit = parseInt(searchParams.get("limit")) || 12;
 
     const handleCategory = (newSlug) => {
         setSearchParams({
-            _page: 1,
-            _per_page: limit
+            page: 1,
+            limit: limit
         });
 
         navigate(`/products/${newSlug}`);
@@ -66,13 +66,13 @@ const SidebarMobile = ({
                                 <h2 className="font-semibold text-lg mb-2">Category</h2>
                                 {
                                     categories.map(item => (
-                                        <label key={item.slug} className="flex gap-2">
+                                        <label key={item._id} className="flex gap-2">
                                             <input
                                                 type="checkbox"
                                                 checked={slug === item.slug}
                                                 onChange={() => handleCategory(item.slug)}
                                             />
-                                            {item.title}
+                                            {item.name}
                                         </label>
                                     ))
                                 }
@@ -82,7 +82,7 @@ const SidebarMobile = ({
                                 <h2 className="font-semibold text-lg mb-2">Product Type</h2>
                                 {
                                     subCategories.map(subcategory => (
-                                        <label key={subcategory.id} className="flex gap-2">
+                                        <label key={subcategory._id} className="flex gap-2">
                                             <input
                                                 type="checkbox"
                                                 checked={subCatSlug === subcategory.slug}
@@ -91,7 +91,7 @@ const SidebarMobile = ({
                                                     setSidebarOpen(false);
                                                 }}
                                             />
-                                            {subcategory.title}
+                                            {subcategory.name}
                                         </label>
                                     ))
                                 }

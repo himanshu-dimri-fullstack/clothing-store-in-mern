@@ -7,7 +7,6 @@ import API from "../api/axios.js";
 
 const Homepage = () => {
     const [loading, setLoading] = useState(true);
-    const [products, setProducts] = useState([]);
     const [womenProducts, setWomenProducts] = useState([]);
     const [menProducts, setMenProducts] = useState([]);
 
@@ -15,15 +14,19 @@ const Homepage = () => {
 
         const fetchProducts = async () => {
             try {
-                const fetchProductsRes = await API.get("/api/products");
-                const data = fetchProductsRes.data;
-                setProducts(data);
+                const [womenRes, menRes] = await Promise.all([
+                    API.get(`/api/products?category=women`),
+                    API.get(`/api/products?category=men`)
+                ])
+                console.log(womenRes)
+                console.log(menRes)
 
-                const WomenProducts = data.filter((item) => item.category.slug == "women");
-                const menProducts = data.filter((item) => item.category.slug == "men");
+                const womenData = womenRes.data.products;
+                const menData = menRes.data.products;
 
-                setWomenProducts(WomenProducts);
-                setMenProducts(menProducts);
+
+                setWomenProducts(womenData);
+                setMenProducts(menData);
                 setLoading(false);
             }
             catch (error) {

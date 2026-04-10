@@ -36,6 +36,20 @@ export const getCategoryById = async (req, res) => {
     }
 }
 
+export const getCategoryBySlug = async (req, res) => {
+    try {
+        const category = await Category.findOne({ slug: req.params.slug });
+
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+        res.status(200).json(category);
+    }
+    catch (error) {
+        return handleResponseError(error, res, "Category");
+    }
+}
+
 export const getCategoryByIdAndUpdate = async (req, res) => {
     try {
         const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });

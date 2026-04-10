@@ -8,8 +8,8 @@ const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategor
 
     const handleCategory = (newSlug) => {
         setSearchParams({
-            _page: 1,
-            _per_page: limit
+            page: 1,
+            limit: limit
         });
 
         navigate(`/products/${newSlug}`);
@@ -31,7 +31,7 @@ const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategor
                                     checked={slug === item.slug}
                                     onChange={() => handleCategory(item.slug)}
                                 />
-                                {item.title}
+                                {item.name}
                             </label>
                         ))
                     }
@@ -41,13 +41,13 @@ const Sidebar = ({ categories, subCategories, subCatSlug, slug, handleSubCategor
                     <h2 className="font-semibold text-lg mb-2">Product Type</h2>
                     {
                         subCategories.map(subcategory => (
-                            <label key={subcategory.id} className="flex gap-2">
+                            <label key={subcategory._id} className="flex gap-2">
                                 <input
                                     type="checkbox"
                                     checked={subCatSlug === subcategory.slug}
                                     onChange={() => handleSubCategory(subcategory.slug)}
                                 />
-                                {subcategory.title}
+                                {subcategory.name}
                             </label>
                         ))
                     }
