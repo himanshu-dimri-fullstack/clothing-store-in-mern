@@ -1,12 +1,10 @@
 import { useContext, createContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
 
     const [cart, setCart] = useState([]);

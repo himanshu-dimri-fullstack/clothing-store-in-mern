@@ -11,7 +11,7 @@ const NavbarTop = () => {
     const navigate = useNavigate();
     const menuRef = useRef();
     const { cart } = useContext(CartContext);
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, loading } = useContext(AuthContext);
 
     useEffect(() => {
         const handler = (e) => {
@@ -63,7 +63,11 @@ const NavbarTop = () => {
                         }
                     </Link>
                     {
-                        user ?
+                        loading ? (
+                            <div className="flex justify-center items-center">
+                                <div className="w-5 h-5 border-2 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
+                            </div>
+                        ) : user ? (
                             <div className="relative z-50" ref={menuRef}>
                                 <button
                                     onClick={() => setOpen(!open)}
@@ -96,11 +100,17 @@ const NavbarTop = () => {
                                     </div>
                                 )}
                             </div>
-                            :
+                        ) : (
                             <div className="flex gap-2">
-                                <button onClick={() => navigate("/login")} className="text-sm text-white bg-[#003963] border border-[#003963]
-                        rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black">Login</button>
+                                <button
+                                    onClick={() => navigate("/login")}
+                                    className="text-sm text-white bg-[#003963] border border-[#003963]
+                rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black"
+                                >
+                                    Login
+                                </button>
                             </div>
+                        )
                     }
 
                 </div>
