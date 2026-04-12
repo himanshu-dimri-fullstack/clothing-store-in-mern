@@ -36,7 +36,6 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' })
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
             secure: true,
             sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000
@@ -53,8 +52,8 @@ export const logoutUser = (_, res) => {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "Lax"
+            secure: True,
+            sameSite: "none"
         });
 
         return res.status(200).json({ message: "Logout successful" });
