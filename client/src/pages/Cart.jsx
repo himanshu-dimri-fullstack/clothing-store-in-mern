@@ -4,13 +4,14 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
 
     const { cart, increaseQty, decreaseQty, removeItem } = useContext(CartContext);
     const { user } = useContext(AuthContext);
 
     const total = cart.reduce(
-        (acc, item) => acc + item.price * item.qty,
+        (acc, item) => acc + item.product.price * item.qty,
         0
     );
 
@@ -56,16 +57,16 @@ const Cart = () => {
                             >
                                 <div className="flex items-center gap-4 md:col-span-2">
                                     <img
-                                        src={item.product?.thu}
+                                        src={`${baseUrl}${item.product?.images[0]}`}
                                         alt=""
                                         className="w-20 h-20 object-cover rounded-lg"
                                     />
                                     <div>
                                         <h3 className="font-semibold text-gray-800">
-                                            {item.product?.title}
+                                            {item.product?.name}
                                         </h3>
                                         <p className="text-gray-500 text-sm">
-                                            ₹{item.priceWhenAdded}
+                                            ₹{item.product?.price}
                                         </p>
                                     </div>
                                 </div>
@@ -88,7 +89,7 @@ const Cart = () => {
 
                                 <div className="text-center md:text-right">
                                     <p className="font-semibold text-gray-800">
-                                        ₹{item.priceWhenAdded * item.qty}
+                                        ₹{item.product?.price * item.qty}
                                     </p>
                                     <button
                                         onClick={() => removeItem(item)}

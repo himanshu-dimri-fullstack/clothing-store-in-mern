@@ -5,8 +5,6 @@ import { handleResponseError } from "../utils/errorUtils.js"
 export const addToCart = async (req, res) => {
     try {
         const { userId, productId, qty } = req.body;
-        console.log(productId);
-        console.log({ "userId": userId });
 
         const newItem = await Cart.create({
             user: userId,
@@ -28,9 +26,10 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
     try {
         const userId = req.user.id;
-        console.log({ "userId": userId })
 
-        const cart = await Cart.find({ user: userId });
+        const cart = await Cart.find({ user: userId })
+            .populate("product", "name price images")
+            .populate("user", "name email");
 
         res.status(200).json(cart);
 
@@ -52,7 +51,7 @@ export const updateCartItem = async (req, res) => {
         if (action === "inc") {
             item.qty += 1;
         }
-        else if (action === "dec") {
+        else if (action === "dec" && item.qty > 1) {
             item.qty -= 1;
         }
 

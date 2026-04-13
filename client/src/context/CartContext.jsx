@@ -6,6 +6,7 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
     const { user } = useContext(AuthContext);
+    console.log({ "user": user });
 
     const [cart, setCart] = useState([]);
 
@@ -21,13 +22,15 @@ const CartProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (user) fetchCart();
-    }, [user]);
+        if (user?._id) {
+            fetchCart();
+        }
+    }, [user?._id]);
 
     const addToCart = async (product) => {
         try {
             await API.post("/api/cart", {
-                userId: user.id,
+                userId: user._id,
                 productId: product._id,
                 qty: 1
             });
