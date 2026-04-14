@@ -14,6 +14,7 @@ const ProductDetailPage = () => {
     const [product, setProduct] = useState(null);
     const [category, setCategory] = useState(null);
     const [isAdded, setIsAdded] = useState(null);
+    const [btnLoading, setbtnLoading] = useState(true);
 
     const { addToCart, cart } = useContext(CartContext);
 
@@ -24,12 +25,6 @@ const ProductDetailPage = () => {
                 const data = productRes.data;
                 setCategory(data.category.name || "Unknown Category");
                 setProduct(data);
-
-                if (user) {
-                    const exist = cart.find(item => item._id == data._id);
-                    setIsAdded(exist);
-                }
-
             } catch (error) {
                 console.error("Error fetching product:", error);
             } finally {
@@ -40,6 +35,19 @@ const ProductDetailPage = () => {
         fetchProduct();
     }, [catSlug, slug]);
 
+    useEffect(() => {
+        if (!product) return;
+
+        if (user) {
+            const exist = cart.find(item => item.product._id === product._id);
+            setIsAdded(!!exist);
+        } else {
+            setIsAdded(false);
+        }
+
+        setbtnLoading(false);
+    }, [cart, product, user]);
+
     const onClick = async (product) => {
         if (user) {
             try {
@@ -49,14 +57,12 @@ const ProductDetailPage = () => {
                 console.log(error.message);
                 return;
             }
-            setIsAdded(product);
+            setIsAdded(true);
         }
         else {
             navigate("/login");
         }
-
     }
-
 
     if (loading) {
         return (
@@ -115,16 +121,22 @@ const ProductDetailPage = () => {
 
                     <div className="flex gap-4 mt-3 md:mt-6">
 
-                        {
-                            isAdded ?
-                                <button onClick={() => navigate("/cart")} className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
-                                    View Cart
-                                </button>
-                                :
-                                <button onClick={() => onClick(product)} className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
-                                    Add to Cart
-                                </button>
 
+                        {
+                            btnLoading ?
+                                <div className="flex justify-center items-center">
+                                    <div className="w-5 h-5 border-2 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
+                                </div>
+                                :
+
+                                isAdded ?
+                                    <button onClick={() => navigate("/cart")} className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                                        View Cart
+                                    </button>
+                                    :
+                                    <button onClick={() => onClick(product)} className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
+                                        Add to Cart
+                                    </button>
                         }
 
                         <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">

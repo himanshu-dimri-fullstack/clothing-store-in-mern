@@ -10,7 +10,7 @@ const NavbarTop = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const menuRef = useRef();
-    const { cart } = useContext(CartContext);
+    const { cart, setCart } = useContext(CartContext);
     const { user, setUser, loading } = useContext(AuthContext);
 
     useEffect(() => {
@@ -27,6 +27,7 @@ const NavbarTop = () => {
         try {
             await API.post("/api/logout");
             setUser(null);
+            setCart([]);
             setOpen(false);
         }
         catch (error) {

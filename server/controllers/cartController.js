@@ -1,6 +1,6 @@
-import Product from "../models/Product.js"
 import Cart from "../models/Cart.js"
 import { handleResponseError } from "../utils/errorUtils.js"
+import jwt from "jsonwebtoken"
 
 export const addToCart = async (req, res) => {
     try {
@@ -25,7 +25,12 @@ export const addToCart = async (req, res) => {
 
 export const getCart = async (req, res) => {
     try {
-        const userId = req.user.id;
+
+        const token = req.cookies.token;
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const userId = decoded.id;
 
         const cart = await Cart.find({ user: userId })
             .populate("product", "name price images")

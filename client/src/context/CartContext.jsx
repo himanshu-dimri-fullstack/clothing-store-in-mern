@@ -6,15 +6,13 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
     const { user } = useContext(AuthContext);
-    console.log({ "user": user });
 
     const [cart, setCart] = useState([]);
 
     const fetchCart = async () => {
         try {
-            const res = await API.get("/api/cart", user);
+            const res = await API.get("/api/cart");
             const data = res.data
-            console.log(data);
             setCart(data);
         } catch (error) {
             console.log(error?.response?.data?.message);
@@ -22,10 +20,10 @@ const CartProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (user?._id) {
+        if (user) {
             fetchCart();
         }
-    }, [user?._id]);
+    }, [user]);
 
     const addToCart = async (product) => {
         try {
@@ -69,7 +67,7 @@ const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, increaseQty, decreaseQty, removeItem }}>
+        <CartContext.Provider value={{ cart, setCart, addToCart, increaseQty, decreaseQty, removeItem }}>
             {children}
         </CartContext.Provider>
     );
