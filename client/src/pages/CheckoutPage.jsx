@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { useState } from "react";
+import { CartContext } from "../context/CartContext";
 
 export default function CheckoutPage() {
     const [form, setForm] = useState({
@@ -9,6 +11,8 @@ export default function CheckoutPage() {
         zip: "",
         card: "",
     });
+    const { cart } = useContext(CartContext);
+    console.log(cart);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,6 +22,10 @@ export default function CheckoutPage() {
         e.preventDefault();
         console.log("Order Placed", form);
     };
+
+    const total = cart.reduce((acc, curr) =>
+        acc + curr.product.price * curr.qty,
+        0)
 
     return (
         <div className="bg-gray-50 min-h-screen py-10">
@@ -62,28 +70,45 @@ export default function CheckoutPage() {
                     </button>
                 </form>
 
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#eee] h-fit sticky top-10">
-                    <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
+                <div className="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-gray-100 h-fit sticky top-10">
+
+                    <h2 className="text-xl font-semibold mb-5 tracking-tight text-gray-800">
+                        Order Summary
+                    </h2>
 
                     <div className="space-y-4">
-                        <div className="flex justify-between text-gray-600">
-                            <span>Product 1</span>
-                            <span>₹999</span>
-                        </div>
-                        <div className="flex justify-between text-gray-600">
-                            <span>Product 2</span>
-                            <span>₹499</span>
-                        </div>
+                        {
+                            cart.map((item) => {
+                                return (
+                                    <div key={item._id} className="flex justify-between items-start text-sm border-b border-gray-100 pb-3 last:border-none">
+
+                                        <div className="flex flex-col">
+                                            <span className="font-medium text-gray-700">
+                                                {item?.product?.name}
+                                            </span>
+                                            <span className="text-gray-400 text-xs">
+                                                Qty: {item?.qty}
+                                            </span>
+                                        </div>
+
+                                        <span className="font-medium text-gray-800">
+                                            ₹{(item?.product?.price) * (item?.qty)}
+                                        </span>
+
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
 
-                    <hr className="my-6" />
+                    <div className="my-6 h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
-                    <div className="flex justify-between text-lg font-semibold">
+                    <div className="flex justify-between items-center text-base font-semibold text-gray-900">
                         <span>Total</span>
-                        <span>₹1498</span>
+                        <span className="text-lg">₹{total}</span>
                     </div>
 
-                    <button className="w-full mt-6 border border-[#003963] text-[#003963] py-3 rounded-xl hover:bg-[#003963] hover:text-white transition focus:outline-none focus:ring-2 focus:ring-[#003963]">
+                    <button className="w-full mt-6 bg-[#003963] text-white py-3 rounded-xl font-medium tracking-wide hover:scale-[1.02] hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#003963]/40">
                         Continue Shopping
                     </button>
                 </div>

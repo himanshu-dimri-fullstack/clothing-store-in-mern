@@ -104,29 +104,34 @@ const Cart = () => {
                 </div>
 
                 {cart.length > 0 && (
-                    <div className="bg-white p-6 rounded-xl shadow h-fit sticky top-6">
-                        <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+                    <div className="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-gray-100 h-fit sticky top-6">
 
-                        <div className="flex justify-between mb-2 text-gray-600">
-                            <span>Subtotal</span>
-                            <span>₹{total}</span>
+                        <h2 className="text-lg font-semibold mb-5 tracking-tight text-gray-800">
+                            Order Summary
+                        </h2>
+
+                        <div className="space-y-3 text-sm">
+                            <div className="flex justify-between text-gray-600">
+                                <span>Subtotal</span>
+                                <span className="font-medium text-gray-800">₹{total}</span>
+                            </div>
+
+                            <div className="flex justify-between text-gray-600">
+                                <span>Shipping</span>
+                                <span className="text-emerald-600 font-medium">Free</span>
+                            </div>
                         </div>
 
-                        <div className="flex justify-between mb-4 text-gray-600">
-                            <span>Shipping</span>
-                            <span className="text-[#003963]">Free</span>
-                        </div>
+                        <div className="my-5 h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
-                        <hr className="my-3" />
-
-                        <div className="flex justify-between font-bold text-lg mb-4">
+                        <div className="flex justify-between items-center font-semibold text-gray-900">
                             <span>Total</span>
-                            <span>₹{total}</span>
+                            <span className="text-lg">₹{total}</span>
                         </div>
 
                         <button
                             onClick={() => navigate("/checkout")}
-                            className="w-full bg-[#003963] hover:bg-white hover:text-[#003963] border border-[#003963] text-white py-2 rounded-lg transition"
+                            className="w-full mt-6 bg-[#003963] text-white py-3 rounded-xl font-medium tracking-wide hover:scale-[1.02] hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#003963]/40"
                         >
                             Checkout
                         </button>
