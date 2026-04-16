@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const Footer = () => {
     return (
         <>
-            <div className="w-full  bg-[#02497c] border-t border-[#ccc] pt-6">
+            <div className="w-full  bg-[#141212] border-t border-[#ccc] pt-6">
                 <div className="container mx-auto py-10 px-3">
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 text-white">
                         <div>
@@ -17,9 +17,9 @@ const Footer = () => {
                         <div>
                             <h5 className="text-lg font-semibold mb-3">Category</h5>
                             <div className="flex flex-col text-sm">
-                                <Link to="/" className="mb-1">Men</Link>
-                                <Link to="/" className="mb-1">Women</Link>
-                                <Link to="/" className="mb-1">Kids</Link>
+                                <Link to="/products/men" className="mb-1">Men</Link>
+                                <Link to="/products/women" className="mb-1">Women</Link>
+                                <Link to="/products/kids" className="mb-1">Kids</Link>
                             </div>
                         </div>
                         <div>
@@ -40,10 +40,6 @@ const Footer = () => {
                         </div>
 
                     </div>
-                </div>
-
-                <div className="flex justify-center items-center py-3 bg-[#003963] text-sm text-white font-semibold border-t border-[#ccc]">
-                    <Link to="/">clothingstore.com</Link>
                 </div>
             </div>
         </>

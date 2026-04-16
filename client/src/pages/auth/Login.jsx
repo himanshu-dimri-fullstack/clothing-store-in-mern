@@ -56,8 +56,8 @@ const Login = () => {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-            <div className="container mx-auto">
+        <div className="md:min-h-screen bg-gray-100 md:flex md:items-center md:justify-center px-4">
+            <div className="container mx-auto py-10 md:py-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 bg-white rounded-2xl shadow-lg overflow-hidden">
 
                     <div className="hidden md:flex flex-col justify-center items-center bg-[#003963] text-white p-10">

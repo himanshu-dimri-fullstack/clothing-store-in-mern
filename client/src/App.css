@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+.pagination .active>.page-link {
+    background-color: #003963 !important;
+    border-color: #003963 !important;
+}
+
+.pagination .page-link {
+    color: #003963 !important;
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff !important;
+}

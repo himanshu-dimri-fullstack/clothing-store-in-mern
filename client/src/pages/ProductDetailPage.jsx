@@ -139,9 +139,9 @@ const ProductDetailPage = () => {
                                     </button>
                         }
 
-                        <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                        {/* <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
                             Buy Now
-                        </button>
+                        </button> */}
                     </div>
 
                 </div>
