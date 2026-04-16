@@ -13,6 +13,7 @@ import Signup from "./pages/auth/Signup";
 import Subcategory from "./admin/pages/Subcategory";
 import Product from "./admin/pages/Product";
 import CheckoutPage from "./pages/CheckoutPage";
+import SuccessPage from "./pages/SuccessPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Route>
 
       {/* ADMIN ROUTES */}
