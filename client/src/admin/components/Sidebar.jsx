@@ -25,6 +25,9 @@ const Sidebar = () => {
                 <NavLink to="/admin/product" className={linkClass}>
                     Products
                 </NavLink>
+                <NavLink to="/admin/orders" className={linkClass}>
+                    Orders
+                </NavLink>
             </nav>
         </div>
     );

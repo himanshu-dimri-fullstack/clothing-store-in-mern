@@ -70,7 +70,17 @@ export const dashboard = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
-    } catch (err) {
-        res.status(500).send("Server Error");
+    } catch (error) {
+        return handleResponseError(res, error);
     }
 }
+
+export const getUsers = async (req, res) => {
+    try {
+        const user = await User.find({ role: "user" }).select('-password');
+        res.json(user);
+    } catch (error) {
+        return handleResponseError(res, error);
+    }
+}
+

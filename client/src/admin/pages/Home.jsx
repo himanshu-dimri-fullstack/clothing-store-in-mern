@@ -10,7 +10,7 @@ import {
 
 import { useContext, useEffect, useState } from "react";
 import API from "../../api/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const Home = () => {
@@ -39,14 +39,14 @@ const Home = () => {
         const fetchDashboardData = async () => {
             try {
                 const [
-                    // usersRes,
+                    usersRes,
                     ordersRes,
                     // revenueRes,
                     categoryRes,
                     subCategoryRes,
                     productRes
                 ] = await Promise.all([
-                    // API.get("/api/users"),
+                    API.get("/api/users"),
                     API.get("/api/orders"),
                     // API.get("/api/orders/revenue"),
                     API.get("/api/categories"),
@@ -54,31 +54,26 @@ const Home = () => {
                     API.get("/api/products"),
                 ]);
                 console.log({ "order": ordersRes.data })
-                console.log({ "cat": categoryRes.data })
-                console.log({ "cat": subCategoryRes.data })
-                console.log({ "product": productRes.data })
-                // TOP STATS
+
                 setStats([
                     {
                         title: "Total Users",
-                        // value: usersRes.data.length,
-                        value: "110",
+                        value: usersRes.data.length,
                         icon: <Users size={20} />
                     },
                     {
-                        title: "Orders",
+                        title: "Total Orders",
                         value: ordersRes.data.data.length,
                         icon: <ShoppingCart size={20} />
                     },
                     {
-                        title: "Revenue",
+                        title: "Total Revenue",
                         // value: `₹${revenueRes.data.total}`,
                         value: "₹45000",
                         icon: < IndianRupee size={20} />
                     },
                 ]);
 
-                // CATALOG STATS
                 setCatalogStats([
                     {
                         title: "Categories",
@@ -97,8 +92,7 @@ const Home = () => {
                     },
                 ]);
 
-                // RECENT ORDERS (last 4)
-                setRecentOrders(ordersRes.data.slice(0, 4));
+                setRecentOrders(ordersRes.data.data);
 
             } catch (error) {
                 console.log(error);
@@ -110,10 +104,17 @@ const Home = () => {
         fetchDashboardData();
     }, []);
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="w-12 h-12 border-4 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-8 bg-gray-50 min-h-screen p-6">
 
-            {/* HEADER */}
             <div className="flex justify-between items-center">
 
                 <div>
@@ -152,83 +153,72 @@ const Home = () => {
 
             </div>
 
-            {/* LOADING */}
-            {loading ? (
-                <div className="text-center text-gray-500">Loading dashboard...</div>
-            ) : (
-                <>
-                    {/* STATS */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {stats.map((item, index) => (
-                            <div
-                                key={index}
-                                className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-lg transition-all border border-gray-100"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <p className="text-gray-500 text-sm">{item.title}</p>
-                                        <h2 className="text-2xl font-bold mt-1 text-gray-800">{item.value}</h2>
-                                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {stats.map((item, index) => (
+                    <div
+                        key={index}
+                        className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-lg transition-all border border-gray-100"
+                    >
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p className="text-gray-500 text-sm">{item.title}</p>
+                                <h2 className="text-2xl font-bold mt-1 text-gray-800">{item.value}</h2>
+                            </div>
 
-                                    <div className="bg-[#003963] text-white p-3 rounded-xl">
-                                        {item.icon}
-                                    </div>
+                            <div className="bg-[#003963] text-white p-3 rounded-xl">
+                                {item.icon}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div>
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Catalog Overview</h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {catalogStats.map((item, index) => (
+                        <div
+                            key={index}
+                            className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-lg transition-all border border-gray-100"
+                        >
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <p className="text-gray-500 text-sm">{item.title}</p>
+                                    <h2 className="text-2xl font-bold mt-1 text-gray-800">{item.value}</h2>
+                                </div>
+
+                                <div className="bg-gray-100 p-3 rounded-xl">
+                                    {item.icon}
                                 </div>
                             </div>
-                        ))}
-                    </div>
-
-                    {/* CATALOG */}
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4 text-gray-800">Catalog Overview</h2>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {catalogStats.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white p-6 rounded-3xl shadow-sm hover:shadow-lg transition-all border border-gray-100"
-                                >
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <p className="text-gray-500 text-sm">{item.title}</p>
-                                            <h2 className="text-2xl font-bold mt-1 text-gray-800">{item.value}</h2>
-                                        </div>
-
-                                        <div className="bg-gray-100 p-3 rounded-xl">
-                                            {item.icon}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
                         </div>
-                    </div>
+                    ))}
+                </div>
+            </div>
 
-                    {/* RECENT ORDERS */}
-                    <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4 text-gray-800">Recent Orders</h2>
-
-                        <div className="space-y-3">
-                            {recentOrders.length > 0 ? (
-                                recentOrders.map((order, index) => (
-                                    <div
-                                        key={order._id || index}
-                                        className="flex justify-between items-center p-3 rounded-xl hover:bg-gray-50 transition"
-                                    >
-                                        <span className="font-medium text-gray-700">
-                                            Order #{order._id?.slice(-5)}
-                                        </span>
-                                        <span className="text-gray-500 font-semibold">
-                                            ₹{order.totalAmount}
-                                        </span>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-500">No recent orders</p>
-                            )}
-                        </div>
-                    </div>
-                </>
-            )}
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Pending Orders</h2>
+                <div className="space-y-3">
+                    {recentOrders.length > 0 ? (
+                        recentOrders.map((order, index) => (
+                            <div
+                                key={order._id || index}
+                                className="flex justify-between items-center p-3 rounded-xl hover:bg-gray-50 transition"
+                            >
+                                <span className="font-medium text-gray-700">
+                                    Order #{order._id}
+                                </span>
+                                <span className="text-gray-500 font-semibold">
+                                    ₹{order.totalAmount}
+                                </span>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500">No recent orders</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

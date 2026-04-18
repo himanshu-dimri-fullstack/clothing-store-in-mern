@@ -14,6 +14,7 @@ import Subcategory from "./admin/pages/Subcategory";
 import Product from "./admin/pages/Product";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
+import Orders from "./admin/pages/Orders";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="category" element={<Category />} />
         <Route path="subcategory" element={<Subcategory />} />
         <Route path="product" element={<Product />} />
+        <Route path="orders" element={<Orders />} />
       </Route>
 
     </Routes>
