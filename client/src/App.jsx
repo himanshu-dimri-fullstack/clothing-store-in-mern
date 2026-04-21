@@ -15,6 +15,7 @@ import Product from "./admin/pages/Product";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
 import Orders from "./admin/pages/Orders";
+import OrderDetailPage from "./admin/pages/OrderDetailPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="subcategory" element={<Subcategory />} />
         <Route path="product" element={<Product />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="orders/:id" element={<OrderDetailPage />} />
       </Route>
 
     </Routes>

@@ -107,7 +107,7 @@ const Orders = () => {
                                 key={index}
                                 className="border-t hover:bg-gray-50 transition"
                             >
-                                <td className="p-4 font-medium"><Link to="">{order._id}</Link></td>
+                                <td className="p-4 font-medium"><Link to={`/admin/orders/${order._id}`}>{order._id}</Link></td>
                                 <td className="p-4">{order.user.name}</td>
                                 <td className="p-4">{formatDate(order.createdAt)}</td>
                                 <td className="p-4">₹{order.totalAmount}</td>
