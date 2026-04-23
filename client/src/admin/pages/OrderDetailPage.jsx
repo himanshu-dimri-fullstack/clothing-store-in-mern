@@ -11,7 +11,8 @@ const OrderDetailPage = () => {
         const fetchOrder = async () => {
             try {
                 const res = await API.get(`/api/orders/${id}`);
-                setOrder(res.data.data); // ✅ FIX
+                setOrder(res.data.data);
+                console.log(res.data.data);
                 setLoading(false);
             } catch (error) {
                 console.log(error?.response?.data?.message);
