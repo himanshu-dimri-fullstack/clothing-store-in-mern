@@ -3,7 +3,9 @@ import NavbarTop from './NavbarTop'
 const Navbar = () => {
     return (
         <>
-            <NavbarTop />
+            <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md">
+                <NavbarTop />
+            </div>
         </>
     )
 }

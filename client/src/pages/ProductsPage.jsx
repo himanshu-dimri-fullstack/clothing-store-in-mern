@@ -6,7 +6,7 @@ import Pagination from "react-responsive-pagination";
 import 'react-responsive-pagination/themes/classic-light-dark.css';
 import Sidebar from "../components/Sidebar.jsx";
 import SidebarMobile from "../components/SidebarMobile.jsx";
-import API from "../api/axios.js"
+import API from "../api/axios.js";
 
 const ProductsPage = () => {
     const { catSlug } = useParams();
@@ -51,7 +51,7 @@ const ProductsPage = () => {
             window.scrollTo(0, 0);
 
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error(error);
         } finally {
             setLoading(false);
         }
@@ -62,32 +62,15 @@ const ProductsPage = () => {
     }, [catSlug, page, subCatSlug]);
 
     const handlePageChange = (newPage) => {
-        const params = {
-            page: newPage,
-            limit: limit
-        };
-
-        if (subCatSlug) {
-            params.type = subCatSlug;
-        }
-
+        const params = { page: newPage, limit };
+        if (subCatSlug) params.type = subCatSlug;
         setSearchParams(params);
     };
 
     const handleSubCategory = (subSlug) => {
-        const params = {
-            page: 1,
-            limit: limit
-        };
-
-        if (subSlug !== subCatSlug) {
-            params.type = subSlug;
-        }
-
+        const params = { page: 1, limit };
+        if (subSlug !== subCatSlug) params.type = subSlug;
         setSearchParams(params);
-
-        fetchData();
-
     };
 
     if (loading) {
@@ -99,12 +82,12 @@ const ProductsPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-3 my-6">
+        <div className="container mx-auto px-3 md:px-6 my-6">
 
-            <div className="text-sm text-[#003963] font-semibold mb-6">
-                <Link to="/">Home</Link>
-                <span className="px-1">/</span>
-                <span>{category}</span>
+            <div className="text-sm text-gray-500 mb-6 flex gap-1">
+                <Link to="/" className="hover:text-[#003963]">Home</Link>
+                <span>/</span>
+                <span className="text-gray-800">{category}</span>
             </div>
 
             <SidebarMobile
@@ -119,30 +102,36 @@ const ProductsPage = () => {
                 handleSubCategory={handleSubCategory}
             />
 
-            <div className="grid grid-cols-12 gap-4">
+            <div className="grid grid-cols-12 gap-6 items-start">
 
-                <div className="hidden lg:block lg:col-span-3">
-                    <Sidebar
-                        categories={categories}
-                        subCategories={subCategories}
-                        slug={catSlug}
-                        subCatSlug={subCatSlug}
-                        handleSubCategory={handleSubCategory}
-                    />
+                <div className="hidden h-full min-h-screen lg:block lg:col-span-3">
+                    <div className="sticky top-18 selft-start bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl p-5 shadow-sm space-y-6">
+                        <Sidebar
+                            categories={categories}
+                            subCategories={subCategories}
+                            slug={catSlug}
+                            subCatSlug={subCatSlug}
+                            handleSubCategory={handleSubCategory}
+                        />
+                    </div>
+
                 </div>
 
                 <div className="col-span-12 lg:col-span-9">
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-stretch">
                         {products.map(product => (
-                            <Link key={product._id} to={`/products/${catSlug}/${product.slug}`}>
+                            <Link
+                                key={product._id}
+                                to={`/products/${catSlug}/${product.slug}`}
+                                className="h-full flex"
+                            >
                                 <ProductCard product={product} />
                             </Link>
                         ))}
                     </div>
 
-
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-8 flex justify-center">
                         <Pagination
                             current={page}
                             total={totalPages}

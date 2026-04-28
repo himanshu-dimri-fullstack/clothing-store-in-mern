@@ -21,12 +21,12 @@ const ProductDetailPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const productRes = await API.get(`/api/products/${slug}`)
+                const productRes = await API.get(`/api/products/${slug}`);
                 const data = productRes.data;
-                setCategory(data.category.name || "Unknown Category");
+                setCategory(data.category.name || "Category");
                 setProduct(data);
             } catch (error) {
-                console.error("Error fetching product:", error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -52,17 +52,14 @@ const ProductDetailPage = () => {
         if (user) {
             try {
                 await addToCart(product);
-            }
-            catch (error) {
+                setIsAdded(true);
+            } catch (error) {
                 console.log(error.message);
-                return;
             }
-            setIsAdded(true);
-        }
-        else {
+        } else {
             navigate("/login");
         }
-    }
+    };
 
     if (loading) {
         return (
@@ -81,67 +78,74 @@ const ProductDetailPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-3 my-6">
+        <div className="container mx-auto px-3 md:px-6 my-6">
 
-
-            <div className="text-sm text-[#003963] font-semibold mb-6">
-                <Link to="/">Home</Link>
-                <span className="px-1">/</span>
-                <Link to={`/products/${catSlug}`}>{category}</Link>
-                <span className="px-1">/</span>
-                <span>{product.name}</span>
+            <div className="text-sm text-gray-500 mb-6 flex flex-wrap gap-1">
+                <Link to="/" className="hover:text-[#003963]">Home</Link>
+                <span>/</span>
+                <Link to={`/products/${catSlug}`} className="hover:text-[#003963]">
+                    {category}
+                </Link>
+                <span>/</span>
+                <span className="text-gray-700 line-clamp-1 max-w-50">
+                    {product.name}
+                </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
 
-                <div className="bg-gray-50 p-4 rounded-lg shadow col-span-1 flex justify-center items-center">
-
+                <div className="bg-white/70 backdrop-blur-md border border-gray-200 p-6 rounded-2xl shadow-sm flex items-center justify-center">
                     <img
                         src={`${baseURL}${product.images[0]}`}
                         alt={product.name}
-                        className="object-contain h-50 md:h-90"
+                        className="object-contain h-60 md:h-96 transition-transform duration-300 hover:scale-105"
                     />
                 </div>
 
-                <div className="col-span-1 lg:col-span-2 flex flex-col gap-2 md:gap-4">
+                <div className="lg:col-span-2 flex flex-col gap-4">
 
-                    <h1 className="text-lg md:text-3xl font-bold text-gray-800">
+                    <h1 className="text-xl md:text-3xl font-semibold text-gray-800 leading-snug">
                         {product.name}
                     </h1>
 
-                    <p className="text-gray-700 leading-relaxed">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit aliquid asperiores minus odio dicta libero, quia veniam quas iusto illum ex autem optio rem nesciunt quis dolorum minima eaque corrupti.
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base max-w-xl">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Sit aliquid asperiores minus odio dicta libero, quia veniam quas.
                     </p>
 
-                    <div className="flex items-center gap-2 md:gap-4 mt-2">
-                        <span className="text-lg md:text-3xl font-bold text-[#003963]">
+                    <div className="flex items-center gap-3 mt-2">
+                        <span className="text-2xl md:text-4xl font-bold text-[#003963]">
                             ₹{product.price}
+                        </span>
+
+                        <span className="text-sm text-green-600 font-medium">
+                            In Stock
                         </span>
                     </div>
 
-                    <div className="flex gap-4 mt-3 md:mt-6">
+                    <div className="flex flex-wrap gap-3 mt-4">
 
+                        {btnLoading ? (
+                            <div className="w-6 h-6 border-2 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
+                        ) : isAdded ? (
+                            <button
+                                onClick={() => navigate("/cart")}
+                                className="px-5 py-2.5 rounded-full border border-[#003963] text-[#003963] hover:bg-[#003963] hover:text-white transition"
+                            >
+                                View Cart
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => onClick(product)}
+                                className="px-5 py-2.5 rounded-full bg-[#003963] text-white hover:bg-[#0056a3] transition"
+                            >
+                                Add to Cart
+                            </button>
+                        )}
 
-                        {
-                            btnLoading ?
-                                <div className="flex justify-center items-center">
-                                    <div className="w-5 h-5 border-2 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
-                                </div>
-                                :
-
-                                isAdded ?
-                                    <button onClick={() => navigate("/cart")} className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
-                                        View Cart
-                                    </button>
-                                    :
-                                    <button onClick={() => onClick(product)} className="bg-[#003963] text-white py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#0056a3] transition">
-                                        Add to Cart
-                                    </button>
-                        }
-
-                        {/* <button className="border border-[#003963] text-[#003963] py-2 px-3 md:py-3 md:px-6 rounded-lg hover:bg-[#003963] hover:text-white transition">
+                        <button className="px-5 py-2.5 rounded-full border border-gray-300 hover:border-black transition">
                             Buy Now
-                        </button> */}
+                        </button>
                     </div>
 
                 </div>
