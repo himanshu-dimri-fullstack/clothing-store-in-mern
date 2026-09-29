@@ -5,10 +5,12 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
 
-    const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem("user");
-        return savedUser ? JSON.parse(savedUser) : null;
-    })
+    // const [user, setUser] = useState(() => {
+    //     const savedUser = localStorage.getItem("user");
+    //     return savedUser ? JSON.parse(savedUser) : null;
+    // })
+
+    const [user, setUser] = useState(null)
 
     const [loading, setLoading] = useState(true);
 
@@ -26,13 +28,13 @@ const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);
 
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-        } else {
-            localStorage.removeItem("user");
-        }
-    }, [user]);
+    // useEffect(() => {
+    //     if (user) {
+    //         localStorage.setItem("user", JSON.stringify(user));
+    //     } else {
+    //         localStorage.removeItem("user");
+    //     }
+    // }, [user]);
 
 
     return (

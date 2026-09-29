@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
+import { Navigate } from "react-router-dom"
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(AuthContext);
+    const { user, setUser, loading } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -27,12 +28,12 @@ const Login = () => {
             if (data.user.role == "admin") {
                 setUser(data);
                 setErrorMessage("");
-                navigate("/admin");
+                navigate("/admin", { replace: true });
             }
             else {
                 setUser(data.user);
                 setErrorMessage("");
-                navigate("/");
+                navigate("/", { replace: true });
             }
         }
         catch (error) {
@@ -54,6 +55,18 @@ const Login = () => {
         return () => clearTimeout(timer);
     }, [errorMessage]);
 
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="w-12 h-12 border-4 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (user) {
+        return <Navigate to="/admin" />
+    }
 
     return (
         <div className="md:min-h-screen bg-gray-100 md:flex md:items-center md:justify-center px-4">
@@ -129,6 +142,7 @@ const Login = () => {
                             </Link>
                         </p>
                     </div>
+
                 </div>
             </div>
         </div>

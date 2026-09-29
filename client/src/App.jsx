@@ -21,14 +21,15 @@ function App() {
   return (
     <Routes>
 
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
       {/* USER ROUTES */}
       <Route element={<UserLayout />}>
         <Route path="/" element={<Homepage />} />
         <Route path="/products/:catSlug" element={<ProductsPage />} />
         <Route path="/products/:catSlug/:slug" element={<ProductDetailPage />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/success" element={<SuccessPage />} />
       </Route>

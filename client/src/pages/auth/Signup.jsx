@@ -25,7 +25,6 @@ const Signup = () => {
             setErrorMessage("Password is not same");
             return;
         }
-
         try {
             const res = await API.post("/api/signup", formData);
             const data = res.data;
@@ -47,9 +46,9 @@ const Signup = () => {
     };
 
     return (
-        <div className="md:min-h-screen bg-gray-100 flex items-center justify-center md:py-4 px-4">
-            <div className="container mx-auto py-10 md:py-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="w-screen h-screen bg-gray-100 flex items-center justify-center">
+            <div className="w-full h-full py-10 md:py-0">
+                <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 bg-white overflow-hidden">
 
                     <div className="hidden md:flex flex-col justify-center items-center bg-[#003963] text-white p-10">
                         <h2 className="text-3xl font-bold mb-4">Welcome Back!</h2>

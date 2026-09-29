@@ -84,7 +84,7 @@ const NavbarTop = () => {
                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-[#003963] px-2 py-2 animate-fadeIn">
 
                                         <button
-                                            onClick={() => navigate("/dashboard")}
+                                            onClick={() => navigate("/admin")}
                                             className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 transition"
                                         >
                                             <LayoutDashboard size={16} />

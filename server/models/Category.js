@@ -21,7 +21,6 @@ const categorySchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-
 categorySchema.pre("findOneAndDelete", async function () {
 
     const category = await this.model.findOne(this.getFilter());

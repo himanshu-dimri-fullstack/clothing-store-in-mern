@@ -19,7 +19,6 @@ export const signupUser = async (req, res) => {
                 email: user.email
             }
         });
-
     }
     catch (error) {
         return handleResponseError(error, res);
@@ -36,10 +35,10 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' })
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "None",
-            // secure: false,
-            // sameSite: "Lax",
+            // secure: true,
+            // sameSite: "None",
+            secure: false,
+            sameSite: "Lax",
             maxAge: 24 * 60 * 60 * 1000
         });
         res.status(200).json({ user: { _id: user._id, name: user.name, email: user.email, role: user.role } })
