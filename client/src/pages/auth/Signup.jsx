@@ -57,92 +57,95 @@ const Signup = () => {
                         </p>
                     </div>
 
-                    <div className="p-8 md:p-12">
-                        <h2 className="text-2xl font-bold mb-6 text-gray-800">
-                            Create Account
-                        </h2>
+                    <div className="flex justify-center items-center">
+                        <div className="p-8 md:p-12 w-[70%]">
+                            <h2 className="text-2xl font-bold mb-6 text-gray-800">
+                                Create Account
+                            </h2>
 
-                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <form onSubmit={handleSubmit} className="space-y-5">
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Full Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Enter your name"
-                                />
-                            </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        required
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Enter your name"
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Enter your email"
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    required
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Enter password"
-                                />
-                            </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        required
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Enter password"
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Confirm Password
-                                </label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    required
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Confirm password"
-                                />
-                            </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Confirm Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="confirmPassword"
+                                        required
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Confirm password"
+                                    />
+                                </div>
 
-                            {
-                                errorMessage && <div className="text-red-500 py-2">{errorMessage}</div>
-                            }
+                                {
+                                    errorMessage && <div className="text-red-500 py-2">{errorMessage}</div>
+                                }
 
-                            <button
-                                type="submit"
-                                className="w-full bg-[#003963] text-white py-2 rounded-lg hover:bg-[#02497c] transition duration-300"
-                            >
-                                Sign Up
-                            </button>
-                        </form>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-[#003963] text-white py-2 rounded-lg hover:bg-[#02497c] transition duration-300"
+                                >
+                                    Sign Up
+                                </button>
+                            </form>
 
-                        <p className="text-sm text-gray-600 mt-6 text-center">
-                            Already have an account?{" "}
-                            <Link to="/login" className="text-[#003963] cursor-pointer hover:underline">
-                                Login
-                            </Link>
-                        </p>
+                            <p className="text-sm text-gray-600 mt-6 text-center">
+                                Already have an account?{" "}
+                                <Link to="/login" className="text-[#003963] cursor-pointer hover:underline">
+                                    Login
+                                </Link>
+                            </p>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

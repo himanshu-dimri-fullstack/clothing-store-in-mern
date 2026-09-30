@@ -80,67 +80,70 @@ const Login = () => {
                         </p>
                     </div>
 
-                    <div className="p-8 md:p-12">
-                        <h2 className="text-2xl font-bold mb-6 text-gray-800">
-                            Login to your account
-                        </h2>
+                    <div className="flex justify-center items-center">
 
-                        <form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="p-8 md:p-12 lg:w-[70%]">
+                            <h2 className="text-2xl font-bold mb-6 text-gray-800">
+                                Login to your account
+                            </h2>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
+                            <form onSubmit={handleSubmit} className="space-y-5">
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    required
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
-                                    placeholder="Enter password"
-                                />
-                            </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Enter your email"
+                                    />
+                                </div>
 
-                            {
-                                errorMessage && <span className="text-red-500 py-2">{errorMessage}</span>
-                            }
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        required
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        placeholder="Enter password"
+                                    />
+                                </div>
 
-                            <div className="flex items-center justify-end text-sm">
-                                <span className="text-[#003963] cursor-pointer hover:underline">
-                                    Forgot Password?
-                                </span>
-                            </div>
+                                {
+                                    errorMessage && <span className="text-red-500 py-2">{errorMessage}</span>
+                                }
 
-                            <button
-                                type="submit"
-                                className="w-full bg-[#003963] text-white py-2 rounded-lg hover:bg-[#02497c] transition duration-300"
-                            >
-                                Login
-                            </button>
-                        </form>
+                                <div className="flex items-center justify-end text-sm">
+                                    <span className="text-[#003963] cursor-pointer hover:underline">
+                                        Forgot Password?
+                                    </span>
+                                </div>
 
-                        <p className="text-sm text-gray-600 mt-6 text-center">
-                            Don’t have an account?
-                            <Link to="/signup" className="text-[#02497c] pl-2 font-bold cursor-pointer hover:underline">
-                                Sign Up
-                            </Link>
-                        </p>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-[#003963] text-white py-2 rounded-lg hover:bg-[#02497c] transition duration-300"
+                                >
+                                    Login
+                                </button>
+                            </form>
+
+                            <p className="text-sm text-gray-600 mt-6 text-center">
+                                Don’t have an account?
+                                <Link to="/signup" className="text-[#02497c] pl-2 font-bold cursor-pointer hover:underline">
+                                    Sign Up
+                                </Link>
+                            </p>
+                        </div>
                     </div>
 
                 </div>

@@ -6,30 +6,62 @@ const Sidebar = () => {
         }`;
 
     return (
-        <div className="w-64 bg-white p-5">
-            <h2 className="text-xl font-bold mb-6">Admin</h2>
+        <>
+            <div className="hidden md:block w-64 bg-white p-5">
+                <h2 className="text-xl font-bold mb-6">Admin</h2>
 
-            <nav className="space-y-2">
-                <NavLink to="/admin" end className={linkClass}>
-                    Home
-                </NavLink>
+                <nav className="space-y-2">
+                    <NavLink to="/admin" end className={linkClass}>
+                        Home
+                    </NavLink>
 
-                <NavLink to="/admin/category" className={linkClass}>
-                    Category
-                </NavLink>
+                    <NavLink to="/admin/category" className={linkClass}>
+                        Category
+                    </NavLink>
 
-                <NavLink to="/admin/subcategory" className={linkClass}>
-                    SubCategory
-                </NavLink>
+                    <NavLink to="/admin/subcategory" className={linkClass}>
+                        SubCategory
+                    </NavLink>
 
-                <NavLink to="/admin/product" className={linkClass}>
-                    Products
-                </NavLink>
-                <NavLink to="/admin/orders" className={linkClass}>
-                    Orders
-                </NavLink>
-            </nav>
-        </div>
+                    <NavLink to="/admin/product" className={linkClass}>
+                        Products
+                    </NavLink>
+                    <NavLink to="/admin/orders" className={linkClass}>
+                        Orders
+                    </NavLink>
+                </nav>
+            </div>
+
+            <div className="flex md:hidden w-screen h-screen bg-white p-2 overflow-hidden flex-col">
+                <div className="grid grid-cols-3 w-full flex-1 mt-20 overflow-hidden">
+                    <nav className="space-y-2">
+                        <NavLink to="/admin" end className={linkClass}>
+                            Home
+                        </NavLink>
+
+                        <NavLink to="/admin/category" className={linkClass}>
+                            Category
+                        </NavLink>
+
+                        <NavLink to="/admin/subcategory" className={linkClass}>
+                            SubCategory
+                        </NavLink>
+
+                        <NavLink to="/admin/product" className={linkClass}>
+                            Products
+                        </NavLink>
+                        <NavLink to="/admin/orders" className={linkClass}>
+                            Orders
+                        </NavLink>
+                    </nav>
+                    <div className="col-span-2 w-full h-full ">
+
+                    </div>
+                </div>
+
+            </div>
+        </>
+
     );
 };
 
