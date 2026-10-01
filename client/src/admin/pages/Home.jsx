@@ -154,7 +154,7 @@ const Home = () => {
                         recentOrders.map((order, index) => (
                             <div
                                 key={order._id || index}
-                                className="flex flex-col md:flex-row md:justify-between md:items-center py-1 rounded-xl hover:bg-gray-50 transition">
+                                className="shadow flex flex-col sm:flex-row sm:justify-between sm:items-center px-1 py-2 rounded-xl hover:bg-gray-50 transition">
                                 <span className="text-sm md:text-md font-medium text-gray-700">
                                     Order #{order._id}
                                 </span>

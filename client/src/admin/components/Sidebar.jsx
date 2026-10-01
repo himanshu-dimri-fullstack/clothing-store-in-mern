@@ -1,8 +1,16 @@
 import { NavLink } from "react-router-dom";
+import {
+    X,
+    House,
+    Layers,
+    ListTree,
+    Package,
+    ShoppingCart
+} from "lucide-react";
 
-const Sidebar = () => {
+const Sidebar = ({ handleMenuClick }) => {
     const linkClass = ({ isActive }) =>
-        `block px-4 py-2 rounded-lg ${isActive ? "bg-[#003963] text-white" : "text-gray-700 hover:bg-gray-200"
+        `block px-4 py-2 text-sm rounded-lg ${isActive ? "bg-[#003963] text-white" : "text-gray-700 hover:bg-gray-200"
         }`;
 
     return (
@@ -12,56 +20,89 @@ const Sidebar = () => {
 
                 <nav className="space-y-2">
                     <NavLink to="/admin" end className={linkClass}>
-                        Home
+                        <div className="flex items-center gap-3">
+                            <House size={18} />
+                            Home
+                        </div>
                     </NavLink>
 
                     <NavLink to="/admin/category" className={linkClass}>
-                        Category
+                        <div className="flex items-center gap-3">
+                            <Layers size={18} />
+                            Category
+                        </div>
                     </NavLink>
 
                     <NavLink to="/admin/subcategory" className={linkClass}>
-                        SubCategory
+                        <div className="flex items-center gap-3">
+                            <ListTree size={18} />
+                            SubCategory
+                        </div>
                     </NavLink>
 
                     <NavLink to="/admin/product" className={linkClass}>
-                        Products
+                        <div className="flex items-center gap-3">
+                            <Package size={18} />
+                            Products
+                        </div>
                     </NavLink>
+
                     <NavLink to="/admin/orders" className={linkClass}>
-                        Orders
+                        <div className="flex items-center gap-3">
+                            <ShoppingCart size={18} />
+                            Orders
+                        </div>
                     </NavLink>
                 </nav>
             </div>
 
             <div className="flex md:hidden w-screen h-screen bg-white p-2 overflow-hidden flex-col">
-                <div className="grid grid-cols-3 w-full flex-1 mt-20 overflow-hidden">
+                <div className="flex justify-between w-full flex-1 z-9999 overflow-hidden pt-3">
                     <nav className="space-y-2">
-                        <NavLink to="/admin" end className={linkClass}>
-                            Home
+                        <NavLink onClick={handleMenuClick} to="/admin" end className={linkClass}>
+                            <div className="flex items-center gap-3">
+                                <House size={18} />
+                                Home
+                            </div>
                         </NavLink>
 
-                        <NavLink to="/admin/category" className={linkClass}>
-                            Category
+                        <NavLink onClick={handleMenuClick} to="/admin/category" className={linkClass}>
+                            <div className="flex items-center gap-3">
+                                <Layers size={18} />
+                                Category
+                            </div>
                         </NavLink>
 
-                        <NavLink to="/admin/subcategory" className={linkClass}>
-                            SubCategory
+                        <NavLink onClick={handleMenuClick} to="/admin/subcategory" className={linkClass}>
+                            <div className="flex items-center gap-3">
+                                <ListTree size={18} />
+                                SubCategory
+                            </div>
                         </NavLink>
 
-                        <NavLink to="/admin/product" className={linkClass}>
-                            Products
+                        <NavLink onClick={handleMenuClick} to="/admin/product" className={linkClass}>
+                            <div className="flex items-center gap-3">
+                                <Package size={18} />
+                                Products
+                            </div>
                         </NavLink>
-                        <NavLink to="/admin/orders" className={linkClass}>
-                            Orders
+
+                        <NavLink onClick={handleMenuClick} to="/admin/orders" className={linkClass}>
+                            <div className="flex items-center gap-3">
+                                <ShoppingCart size={18} />
+                                Orders
+                            </div>
                         </NavLink>
                     </nav>
-                    <div className="col-span-2 w-full h-full ">
 
+                    <div className="flex justify-end">
+                        <button className="h-10 w-10 text-2xl" onClick={handleMenuClick}>
+                            <X />
+                        </button>
                     </div>
                 </div>
-
             </div>
         </>
-
     );
 };
 
