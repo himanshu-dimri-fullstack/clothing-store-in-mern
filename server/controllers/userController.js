@@ -2,10 +2,25 @@ import User from "../models/User.js"
 import bcrypt from "bcrypt"
 import { handleResponseError } from "../utils/errorUtils.js"
 import jwt from "jsonwebtoken"
+import Otp from "../models/Otp.js"
+import moment from "moment"
+import { sendMail } from "../utils/sendMail.js"
 
 export const signupUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        if (!name) {
+            return res.status(400).json({ message: "Name is required" })
+        }
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" })
+        }
+        if (!password) {
+            return res.status(400).json({ message: "Password is required" })
+        }
+
+        // await send
+
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -80,6 +95,95 @@ export const getUsers = async (req, res) => {
         res.json(user);
     } catch (error) {
         return handleResponseError(res, error);
+    }
+}
+
+export const verifyEmailForSignUp = async (req, res) => {
+    try {
+
+        const { email } = req.body
+
+        if (!email) {
+            return res.status(400).json({
+                message: "Email is required"
+            })
+        }
+
+        const otp = Math.floor(1000 + Math.random() * 9000)
+
+        const otpExpiresAt = moment()
+            .add(2, "minutes")
+            .toDate()
+
+        const verify = await sendMail(
+            email,
+            otp,
+            "Verify Your Email"
+        )
+
+        if (!verify) {
+            return res.status(400).json({
+                message: "OTP is not sent"
+            })
+        }
+
+        const existUser = await Otp.findOne({ email })
+
+        if (existUser) {
+            await Otp.updateOne({ email }, { otp, otpExpiresAt })
+        }
+        else {
+            await Otp.create({
+                email,
+                otp,
+                otpExpiresAt
+            })
+        }
+
+        return res.status(200).json({
+            message: "OTP is sent"
+        })
+
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Something went wrong"
+        })
+    }
+}
+
+export const verifySignupOTP = async (req, res) => {
+    try {
+        const { otp, email } = req.body
+        if (!email) {
+            return res.status(400).json({ message: "Email is not available" })
+        }
+        if (!otp) {
+            return res.status(400).json({ message: "OTP is not available" })
+        }
+        const user = await Otp.findOne({ email })
+
+        if (!user) {
+            return res.status(404).json({ message: "User not exist" })
+        }
+
+        if (user.otp !== otp) {
+            return res.status(400).json({ message: "Invalid OTP" })
+        }
+
+        if (moment().isAfter(user.otpExpiresAt)) {
+            return res.status(400).json({
+                message: "OTP has expired"
+            })
+        }
+
+        await Otp.deleteOne({ email })
+
+        return res.status(200).json({ message: "OTP is verified" })
+    }
+    catch (error) {
+        console.log(error)
     }
 }
 
