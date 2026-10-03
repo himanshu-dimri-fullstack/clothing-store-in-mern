@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify"
 
 const Login = () => {
 
@@ -10,12 +11,11 @@ const Login = () => {
 
     const { user, setUser, loading } = useContext(AuthContext);
 
+    const [btnloading, setBtnLoading] = useState(false)
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
-
-    const [errorMessage, setErrorMessage] = useState("");
 
 
     const handleChange = (e) => {
@@ -31,27 +31,42 @@ const Login = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+        if (formData.email == "") {
+            toast.error("Email is required")
+        }
+        if (formData.password == "") {
+            toast.error("Password is required")
+        }
 
         try {
-
+            setBtnLoading(true)
             const res = await API.post("/api/login", formData);
 
             const data = res.data;
 
             if (data.user.role == "admin") {
-
+                setBtnLoading(false)
+                toast.success(data.message);
                 setUser(data);
 
-                setErrorMessage("");
+
+                setFormData({
+                    email: "",
+                    password: "",
+                });
 
                 navigate("/admin", { replace: true });
 
             }
             else {
-
+                setBtnLoading(false)
+                toast.success(data.message);
                 setUser(data.user);
 
-                setErrorMessage("");
+                setFormData({
+                    email: "",
+                    password: "",
+                });
 
                 navigate("/", { replace: true });
 
@@ -59,8 +74,8 @@ const Login = () => {
 
         }
         catch (error) {
-
-            setErrorMessage(error.response.data.message);
+            setBtnLoading(false)
+            toast.error(error?.response?.data?.message);
 
             setFormData({
                 email: "",
@@ -69,19 +84,6 @@ const Login = () => {
 
         }
     };
-
-
-    useEffect(() => {
-
-        if (!errorMessage) return;
-
-        const timer = setTimeout(() => {
-            setErrorMessage("");
-        }, 5000);
-
-        return () => clearTimeout(timer);
-
-    }, [errorMessage]);
 
 
     if (loading) {
@@ -94,7 +96,6 @@ const Login = () => {
             </div>
         );
     }
-
 
     if (user) {
         return <Navigate to="/admin" />;
@@ -135,12 +136,10 @@ const Login = () => {
                                 Login to your account
                             </h2>
 
-
                             <form
                                 onSubmit={handleSubmit}
                                 className="space-y-5"
                             >
-
 
                                 {/* Email */}
 
@@ -184,26 +183,13 @@ const Login = () => {
                                 </div>
 
 
-                                {/* Error */}
-
-                                {
-                                    errorMessage && (
-
-                                        <span className="block text-red-500 text-sm py-2">
-                                            {errorMessage}
-                                        </span>
-
-                                    )
-                                }
-
-
                                 {/* Forgot Password */}
 
                                 <div className="flex items-center justify-end text-sm">
 
-                                    <span className="text-[#003963] cursor-pointer hover:underline">
+                                    <Link to="/forget-password" className="text-[#003963] cursor-pointer hover:underline">
                                         Forgot Password?
-                                    </span>
+                                    </Link>
 
                                 </div>
 
@@ -214,7 +200,10 @@ const Login = () => {
                                     type="submit"
                                     className="w-full bg-[#003963] text-white py-2 rounded-lg hover:bg-[#02497c] transition duration-300"
                                 >
-                                    Login
+                                    {
+                                        btnloading ? "Wait..." : "Login"
+                                    }
+
                                 </button>
 
                             </form>

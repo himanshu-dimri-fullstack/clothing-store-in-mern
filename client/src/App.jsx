@@ -19,6 +19,8 @@ import { ToastContainer } from "react-toastify"
 import CategoryShow from "./admin/pages/category/Show"
 import CategoryAdd from "./admin/pages/category/Add"
 import CategoryEdit from "./admin/pages/category/Edit"
+import ForgetPassword from "./pages/auth/ForgetPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* USER ROUTES */}
         <Route element={<UserLayout />}>

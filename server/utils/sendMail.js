@@ -20,15 +20,16 @@ const transport = nodemailer.createTransport({
 
 export const sendMail = async (email, otp, subject) => {
 
-    const info = await transport.sendMail({
+    try {
+        const info = await transport.sendMail({
 
-        from: process.env.SMTP_USER,
+            from: process.env.SMTP_USER,
 
-        to: email,
+            to: email,
 
-        subject: subject,
+            subject: subject,
 
-        html: `
+            html: `
             <!DOCTYPE html>
             <html>
             <head>
@@ -219,6 +220,11 @@ export const sendMail = async (email, otp, subject) => {
             </html>
         `
 
-    })
-    return info
+        })
+        return info
+    }
+    catch (error) {
+        return error
+    }
+
 }

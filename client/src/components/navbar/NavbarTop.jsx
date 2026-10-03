@@ -5,6 +5,7 @@ import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
 import { ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
 import API from "../../api/axios"
+import { toast } from "react-toastify"
 
 const NavbarTop = () => {
     const [open, setOpen] = useState(false);
@@ -25,13 +26,14 @@ const NavbarTop = () => {
 
     const handleLogout = async () => {
         try {
-            await API.post("/api/logout");
+            const res = await API.post("/api/logout");
             setUser(null);
             setCart([]);
             setOpen(false);
+            toast.success(res?.data?.message)
         }
         catch (error) {
-            console.log(error.message);
+            toast.success(error?.response?.data?.message)
         }
     };
 

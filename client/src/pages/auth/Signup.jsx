@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import API from "../../api/axios";
-
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -121,10 +121,8 @@ const Signup = () => {
                 res.data.message || "OTP resent successfully"
             );
 
-            // Clear old OTP
             setOtp("");
 
-            // Restart timer
             setTimeLeft(120);
 
         }
@@ -142,8 +140,6 @@ const Signup = () => {
         }
     };
 
-
-    // Verify OTP
     const handleVerifyOtp = async () => {
 
         if (!otp) {
@@ -164,13 +160,10 @@ const Signup = () => {
 
             toast.success(res.data.message);
 
-            // Email verified
             setEmailVerified(true);
 
-            // Hide OTP
             setShowOtp(false);
 
-            // Stop timer
             setTimeLeft(0);
 
         }
@@ -189,8 +182,6 @@ const Signup = () => {
         }
     };
 
-
-    // Signup
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -203,7 +194,6 @@ const Signup = () => {
             return;
         }
 
-
         if (formData.password !== formData.confirmPassword) {
 
             toast.error("Password is not same");
@@ -211,11 +201,9 @@ const Signup = () => {
             return;
         }
 
-
         try {
 
             const res = await API.post("/api/signup", formData);
-
 
             setFormData({
                 name: "",
@@ -232,8 +220,8 @@ const Signup = () => {
 
             setTimeLeft(0);
 
-
             toast.success(res.data.message);
+            navigate("/login")
 
         }
         catch (error) {
@@ -244,7 +232,6 @@ const Signup = () => {
             );
         }
     };
-
 
     return (
 
