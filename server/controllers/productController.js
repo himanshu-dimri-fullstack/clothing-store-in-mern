@@ -8,7 +8,6 @@ import path from "path";
 
 export const createProduct = async (req, res) => {
     try {
-
         const imageUrls = req.files?.map(file => {
             console.log(file);
             return `/uploads/${file.filename}`;
@@ -26,41 +25,31 @@ export const createProduct = async (req, res) => {
         return handleResponseError(error, res);
     }
 };
-export const getProducts = async (req, res) => {
+export const getProductsByCategory = async (req, res) => {
     try {
-        const { category, subcategory } = req.query;
-        const page = req.query.page || 1;
-        const limit = req.query.limit || 12;
-        const skip = (page - 1) * limit;
+        const { catSlug } = req.params
+        const { page, limit } = req.query
+        const skip = (page - 1) * limit
 
-        let query = {};
-
-        if (category) {
-            const cat = await Category.findOne({ slug: category });
-            if (cat) query.category = cat._id;
+        if (!catSlug) {
+            return res.status(400).json({ message: "Category is required" })
         }
 
-        if (subcategory) {
-            const subCat = await Subcategory.findOne({ slug: subcategory });
-            if (subCat) query.subcategory = subCat._id;
+        const category = await Category.findOne({ slug: catSlug })
+
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" })
         }
-
-        const totalProducts = await Product.countDocuments(query);
-
-        const products = await Product.find(query)
-            .populate("category")
-            .populate("subcategory")
+        const totalProducts = await Product.countDocuments({ category: category._id })
+        const totalPages = Math.ceil(totalProducts / limit)
+        const products = await Product.find({ category: category._id })
+            .populate("category", "slug")
+            .populate("subcategory", "slug")
             .skip(skip)
-            .limit(Number(limit));
-
-        res.status(200).json({
-            products,
-            currentPage: Number(page),
-            totalPages: Math.ceil(totalProducts / limit),
-            totalProducts
-        });
-
-    } catch (error) {
+            .limit(limit);
+        return res.status(200).json({ products, totalPages })
+    }
+    catch (error) {
         return handleResponseError(error, res);
     }
 };

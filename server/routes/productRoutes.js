@@ -1,6 +1,6 @@
 import express from "express"
 import {
-    createProduct, getProducts, getProductBySlug, getProductByIdAndUpdate,
+    createProduct, getProductsByCategory, getProductBySlug, getProductByIdAndUpdate,
     deleteProductById
 } from "../controllers/productController.js";
 import { auth } from "../middlewares/auth.js";
@@ -9,7 +9,7 @@ import { upload } from "../middlewares/multer.js";
 
 const router = express.Router();
 
-router.get("/products", getProducts)
+router.get("/products/category/:catSlug", getProductsByCategory)
 router.get("/products/:slug", getProductBySlug)
 router.post("/products", auth, isAdmin, upload.array("images"), createProduct)
 router.put("/products/:id", auth, isAdmin, upload.array("images"), getProductByIdAndUpdate)

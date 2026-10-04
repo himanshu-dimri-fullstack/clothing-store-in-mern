@@ -13,8 +13,8 @@ const Homepage = () => {
         const fetchProducts = async () => {
             try {
                 const [womenRes, menRes] = await Promise.all([
-                    API.get(`/api/products?category=women`),
-                    API.get(`/api/products?category=men`)
+                    API.get(`/api/products/category/women`),
+                    API.get(`/api/products/category/men`)
                 ]);
 
                 setWomenProducts(womenRes.data.products);
@@ -71,7 +71,7 @@ const Homepage = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 items-stretch">
                         {womenProducts.slice(0, 12).map((product) => (
                             <Link
-                                to={`/products/women/${product.slug}`}
+                                to={`/products/${product.category.slug}/${product.subcategory.slug}/${product.slug}`}
                                 key={product._id}
                                 className="h-full"
                             >
@@ -100,7 +100,7 @@ const Homepage = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 items-stretch">
                         {menProducts.slice(0, 12).map((product) => (
                             <Link
-                                to={`/products/men/${product.slug}`}
+                                to={`/products/${product.category.slug}/${product.subcategory.slug}/${product.slug}`}
                                 key={product._id}
                                 className="h-full"
                             >

@@ -37,7 +37,8 @@ function App() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<Homepage />} />
           <Route path="/products/:catSlug" element={<ProductsPage />} />
-          <Route path="/products/:catSlug/:slug" element={<ProductDetailPage />} />
+          <Route path="/products/:catSlug/:subCatSlug" element={<ProductsPage />} />
+          <Route path="/products/:catSlug/:subCatSlug/:slug" element={<ProductDetailPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/success" element={<SuccessPage />} />
