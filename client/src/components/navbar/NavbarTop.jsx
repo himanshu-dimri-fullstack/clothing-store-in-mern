@@ -1,6 +1,6 @@
 import { ShoppingCart, User } from "lucide-react"
 import { useContext, useEffect, useRef, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
 import { ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
@@ -8,8 +8,10 @@ import API from "../../api/axios"
 import { toast } from "react-toastify"
 
 const NavbarTop = () => {
+    const { pathname } = useLocation()
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+
     const menuRef = useRef();
     const { cart, setCart } = useContext(CartContext);
     const { user, setUser, loading } = useContext(AuthContext);
@@ -37,6 +39,10 @@ const NavbarTop = () => {
         }
     };
 
+    const handleLogin = () => {
+        navigate("/login", { state: { nextRedirect: pathname } })
+    }
+
     return (
         <div className="container mx-auto pt-3 px-3">
             <div className="flex pb-2 h-10 lg:h-12 justify-between items-center gap-3">
@@ -47,13 +53,13 @@ const NavbarTop = () => {
                     <input placeholder="Search" className="p-2 w-100 xl:w-200 outline-none border border-[#53c9d7] rounded-xl text-sm text-black font-semibold
                      focus:outline-none" />
                 </div>
-                <div className="flex gap-6">
+                <div className="flex gap-3 sm:gap-6">
                     <Link to="/cart" className="flex items-center gap-1">
                         {
                             cart.length > 0 ?
                                 <>
                                     <ShoppingCart size={16} strokeWidth={2} />
-                                    <span className="text-sm text-black font-semibold">Cart</span>
+                                    <span className="text-[10px] sm:text-sm text-black font-semibold">Cart</span>
                                     <span className="flex items-center justify-center w-5 h-5 text-xs text-white font-semibold bg-[#003963] rounded-full">
                                         {cart.length}
                                     </span>
@@ -74,8 +80,8 @@ const NavbarTop = () => {
                             <div className="relative z-50" ref={menuRef}>
                                 <button
                                     onClick={() => setOpen(!open)}
-                                    className="flex items-center gap-2 text-sm text-white bg-[#003963]
-                border border-[#003963] rounded-full px-4 lg:px-6 py-1.5 lg:py-2 
+                                    className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm text-white bg-[#003963]
+                border border-[#003963] rounded-full px-3 sm:px-4 lg:px-6 py-1.5 lg:py-2 
                 font-semibold hover:bg-white hover:text-black transition-all duration-200"
                                 >
                                     {user?.name.split(" ")[0]}
@@ -106,7 +112,7 @@ const NavbarTop = () => {
                         ) : (
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => navigate("/login")}
+                                    onClick={handleLogin}
                                     className="text-sm text-white bg-[#003963] border border-[#003963]
                 rounded-4xl px-4 lg:px-8 py-1 lg:py-2 font-semibold hover:bg-white hover:text-black"
                                 >

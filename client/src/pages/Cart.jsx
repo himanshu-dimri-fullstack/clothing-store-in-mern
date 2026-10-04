@@ -15,6 +15,10 @@ const Cart = () => {
         0
     );
 
+    const handleLogin = () => {
+        navigate("/login", { state: { nextRedirect: "/cart" } })
+    }
+
     if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -23,7 +27,7 @@ const Cart = () => {
                         Please login to view your cart
                     </h2>
                     <button
-                        onClick={() => navigate("/login")}
+                        onClick={handleLogin}
                         className="bg-[#003963] text-white px-6 py-2 rounded-lg hover:bg-white hover:text-[#003963] border border-[#003963] transition"
                     >
                         Login

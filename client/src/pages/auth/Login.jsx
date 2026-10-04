@@ -1,11 +1,14 @@
 
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import API from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify"
 
 const Login = () => {
+
+    const location = useLocation()
+    const nextRedirect = location.state?.nextRedirect || "/";
 
     const navigate = useNavigate();
 
@@ -68,8 +71,7 @@ const Login = () => {
                     password: "",
                 });
 
-                navigate("/", { replace: true });
-
+                navigate(nextRedirect, { replace: true });
             }
 
         }
@@ -98,9 +100,16 @@ const Login = () => {
     }
 
     if (user) {
-        return <Navigate to="/admin" />;
-    }
+        if (user.role === "admin") {
+            return <Navigate to="/admin" replace />;
+        }
 
+        if (user.role === "user") {
+            return <Navigate to={nextRedirect} replace />;
+        }
+
+        return <Navigate to="/" replace />;
+    }
 
     return (
 
@@ -155,7 +164,7 @@ const Login = () => {
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        className="w-full px-4 text-sm py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
                                         placeholder="Enter your email"
                                     />
 
@@ -176,7 +185,7 @@ const Login = () => {
                                         required
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        className="w-full px-4 text-sm py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
                                         placeholder="Enter password"
                                     />
 

@@ -44,12 +44,14 @@ const ForgetPassword = () => {
         try {
             setLoading(true)
             const res = await API.post("/api/forget-password/verify-otp", { email, otp })
+            toast.success(res?.data?.message)
             setLoading(false)
             setOtp("")
             setEmail("")
             navigate("/reset-password", { state: { email: res?.data?.email } })
         }
         catch (error) {
+            toast.error(error?.response?.data?.message)
             setLoading(false)
             setOtp("")
         }
@@ -65,17 +67,6 @@ const ForgetPassword = () => {
         return () => clearInterval(interval)
     }, [showOTP, timeLeft])
 
-
-    // if (loading) {
-
-    //     return (
-    //         <div className="flex justify-center items-center h-screen">
-
-    //             <div className="w-12 h-12 border-4 border-gray-300 border-t-[#003963] rounded-full animate-spin"></div>
-
-    //         </div>
-    //     );
-    // }
 
     return (
 

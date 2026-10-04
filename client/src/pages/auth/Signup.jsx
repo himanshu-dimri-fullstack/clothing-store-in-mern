@@ -288,7 +288,7 @@ const Signup = () => {
                                         required
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        className="w-full px-4 text-sm py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
                                         placeholder="Enter your name"
                                     />
 
@@ -313,7 +313,7 @@ const Signup = () => {
                                             value={formData.email}
                                             onChange={handleChange}
                                             disabled={emailVerified || showOtp}
-                                            className={`flex-1 min-w-0 px-4 py-1 border border-[#003963] rounded-lg outline-none ${emailVerified || showOtp
+                                            className={`flex-1 min-w-0 px-4 text-sm py-2 border border-[#003963] rounded-lg outline-none ${emailVerified || showOtp
                                                 ? "bg-gray-100 cursor-not-allowed"
                                                 : "focus:ring-2 focus:ring-[#003963]"
                                                 }`}
@@ -341,7 +341,7 @@ const Signup = () => {
                                                         : handleVerifyEmail
                                             }
 
-                                            className={`px-4 py-1 rounded-lg text-sm font-medium text-white transition ${emailVerified
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition ${emailVerified
                                                 ? "bg-green-600 cursor-default"
                                                 : timeLeft > 0
                                                     ? "bg-gray-400 cursor-not-allowed"
@@ -391,7 +391,7 @@ const Signup = () => {
                                                         e.target.value.replace(/\D/g, "")
                                                     )
                                                 }
-                                                className="flex-1 min-w-0 px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none tracking-[6px]"
+                                                className="flex-1 min-w-0 px-4 text-sm py-2 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none tracking-[6px]"
                                                 placeholder="Enter OTP"
                                             />
 
@@ -404,7 +404,7 @@ const Signup = () => {
                                                     timeLeft === 0
                                                 }
                                                 onClick={handleVerifyOtp}
-                                                className={`px-4 py-1 rounded-lg text-sm font-medium text-white transition ${otp.length === 4 && timeLeft > 0
+                                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition ${otp.length === 4 && timeLeft > 0
                                                     ? "bg-[#003963] hover:bg-[#02497c]"
                                                     : "bg-gray-400 cursor-not-allowed"
                                                     }`}
@@ -462,7 +462,7 @@ const Signup = () => {
                                         required
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        className="w-full px-4 py-2 text-sm border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
                                         placeholder="Enter password"
                                     />
 
@@ -483,7 +483,7 @@ const Signup = () => {
                                         required
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-1 border border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
+                                        className="w-full px-4 py-2 border text-sm border-[#003963] rounded-lg focus:ring-2 focus:ring-[#003963] outline-none"
                                         placeholder="Confirm password"
                                     />
 
@@ -513,7 +513,7 @@ const Signup = () => {
 
                                 <Link
                                     to="/login"
-                                    className="text-[#003963] cursor-pointer hover:underline"
+                                    className="text-[#003963] cursor-pointer font-semibold hover:underline"
                                 >
                                     Login
                                 </Link>
